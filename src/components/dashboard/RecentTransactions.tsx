@@ -25,15 +25,12 @@ export function RecentTransactions({ limit }: { limit?: number }) {
 
   const filtered = useMemo(() => {
     return transactions.filter((t) => {
-      // Filter tipe
       if (typeFilter !== 'all' && t.type !== typeFilter) {
         return false;
       }
-      // Filter dompet
       if (walletFilter !== 'all' && t.wallet_id !== walletFilter && t.target_wallet_id !== walletFilter) {
         return false;
       }
-      // Pencarian
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchDesc = t.description.toLowerCase().includes(query);

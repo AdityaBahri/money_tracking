@@ -11,7 +11,6 @@ import {
   AlertCircle,
   Sun,
   Moon,
-  ArrowRight,
 } from 'lucide-react';
 
 export function AuthPage() {
@@ -273,20 +272,17 @@ export function AuthPage() {
               </>
             )}
 
-            {/* Submit Button */}
             <div className="pt-2">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="tap-target w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm"
+                className="tap-target w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-xs"
               >
                 <span>{isSubmitting ? 'Memproses...' : mode === 'register' ? 'Daftar & Buka Aplikasi' : 'Masuk ke Aplikasi'}</span>
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           </form>
 
-          {/* Guest Mode Quick Link */}
           <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800/80 text-center">
             <button
               type="button"
@@ -299,9 +295,8 @@ export function AuthPage() {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="w-full text-center py-4 text-xs text-slate-400 dark:text-slate-500">
-        SakuRapi - Manajemen Keuangan &amp; Pelacakan Dompet Pribadi
+        SakuRapi: Manajemen Keuangan dan Pelacakan Dompet Pribadi
       </footer>
     </div>
   );

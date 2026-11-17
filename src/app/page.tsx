@@ -28,6 +28,7 @@ export default function HomePage() {
     isAddWalletOpen,
     editingDebt,
     isAddDebtOpen,
+    setIsScannerOpen,
   } = useFinance();
 
   if (isLoading) {
@@ -54,7 +55,7 @@ export default function HomePage() {
         <Sidebar />
 
         {/* Main Content Area */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 max-w-5xl mx-auto w-full">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-28 md:pb-8 max-w-5xl mx-auto w-full">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-24 text-slate-400">
               <Loader2 className="w-8 h-8 animate-spin text-emerald-600 mb-3" aria-hidden="true" />
@@ -76,7 +77,7 @@ export default function HomePage() {
                 <div>
                   <div className="mb-6">
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                      Semua Dompet & Rekening
+                      Semua Dompet &amp; Rekening
                     </h1>
                     <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
                       Pantau dan sesuaikan saldo pada setiap rekening bank, e-wallet, atau kas fisik Anda.
@@ -107,16 +108,23 @@ export default function HomePage() {
               )}
 
               {activeTab === 'scanner' && (
-                <div>
-                  <div className="mb-6">
-                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                      Pindai Struk Belanja
-                    </h1>
-                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-                      Deteksi otomatis total nominal dari struk fisik.
-                    </p>
+                <div className="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#131B2A] text-center max-w-lg mx-auto my-6">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center mb-3">
+                    <Loader2 className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  <ReceiptScannerModal />
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+                    Pindai Struk Belanja
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
+                    Ambil foto struk fisik atau unggah gambar nota belanja Anda untuk mencatat pengeluaran otomatis.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setIsScannerOpen(true)}
+                    className="tap-target px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors"
+                  >
+                    <span>Buka Pemindai Struk</span>
+                  </button>
                 </div>
               )}
             </>

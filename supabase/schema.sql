@@ -198,13 +198,8 @@ BEGIN
     COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1))
   );
 
-  -- Seed default starter wallets for the new user
-  INSERT INTO public.wallets (user_id, name, type, balance, color, is_primary)
-  VALUES 
-    (NEW.id, 'Uang Tunai', 'cash', 0, 'emerald', true),
-    (NEW.id, 'BCA', 'bank', 0, 'blue', false),
-    (NEW.id, 'GoPay', 'ewallet', 0, 'indigo', false);
-
+  -- Catatan: Akun baru tidak diberikan dompet bawaan.
+  -- Pengguna menambahkan sendiri dompet dan saldo awal mereka.
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

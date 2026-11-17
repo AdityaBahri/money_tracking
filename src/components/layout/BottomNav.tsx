@@ -13,7 +13,6 @@ export function BottomNav() {
       aria-label="Navigasi Bawah Mobile"
     >
       <div className="flex items-center justify-around h-16 px-2">
-        {/* Dashboard */}
         <button
           type="button"
           onClick={() => setActiveTab('dashboard')}
@@ -28,7 +27,6 @@ export function BottomNav() {
           <span className="text-[11px]">Beranda</span>
         </button>
 
-        {/* Dompet */}
         <button
           type="button"
           onClick={() => setActiveTab('wallets')}
@@ -43,19 +41,17 @@ export function BottomNav() {
           <span className="text-[11px]">Dompet</span>
         </button>
 
-        {/* Center Action: Plus Transaction */}
-        <div className="flex-1 flex justify-center -mt-5">
+        <div className="flex-1 flex justify-center -mt-4">
           <button
             type="button"
             onClick={() => setIsAddTxOpen(true)}
-            className="w-12 h-12 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shadow-lg shadow-emerald-600/30 active:scale-95 transition-transform focus:ring-4 focus:ring-emerald-500/30"
+            className="w-11 h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center border border-emerald-500/20 active:scale-95 transition-transform"
             aria-label="Tambah transaksi baru"
           >
-            <Plus className="w-6 h-6 stroke-[2.5]" aria-hidden="true" />
+            <Plus className="w-5 h-5 stroke-[2.5]" aria-hidden="true" />
           </button>
         </div>
 
-        {/* Utang */}
         <button
           type="button"
           onClick={() => setActiveTab('debts')}
@@ -70,7 +66,6 @@ export function BottomNav() {
           <span className="text-[11px]">Utang</span>
         </button>
 
-        {/* Riwayat */}
         <button
           type="button"
           onClick={() => setActiveTab('transactions')}
@@ -88,4 +83,3 @@ export function BottomNav() {
     </nav>
   );
 }
-

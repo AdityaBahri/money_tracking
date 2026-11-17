@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useFinance } from '@/context/FinanceContext';
 import { TransactionType } from '@/types/finance';
 import { formatRupiah, parseNumericInput } from '@/lib/formatters';
-import { X, ArrowUpRight, ArrowDownLeft, ArrowRightLeft } from 'lucide-react';
+import { X, ArrowUpRight, ArrowDownLeft, ArrowRightLeft, Wallet, AlertCircle } from 'lucide-react';
 
 const EXPENSE_CATEGORIES = [
   'Makanan & Minuman',
@@ -29,12 +29,14 @@ const INCOME_CATEGORIES = [
 ];
 
 export function TransactionModal() {
-  const { isAddTxOpen, setIsAddTxOpen, wallets, addTransaction } = useFinance();
+  const { isAddTxOpen, setIsAddTxOpen, setIsAddWalletOpen, wallets, addTransaction } = useFinance();
 
   const [type, setType] = useState<TransactionType>('expense');
   const [amountInput, setAmountInput] = useState('');
-  const [walletId, setWalletId] = useState(wallets[0]?.id || '');
-  const [targetWalletId, setTargetWalletId] = useState(wallets[1]?.id || '');
+  const [selectedWalletId, setSelectedWalletId] = useState('');
+  const [selectedTargetWalletId, setSelectedTargetWalletId] = useState('');
+  const walletId = selectedWalletId || wallets[0]?.id || '';
+  const targetWalletId = selectedTargetWalletId || wallets[1]?.id || '';
   const [categoryName, setCategoryName] = useState('Makanan & Minuman');
   const [description, setDescription] = useState('');
   const [transactionDate, setTransactionDate] = useState('2024-11-18');
@@ -57,7 +59,6 @@ export function TransactionModal() {
     }
   };
 
-  // Handle ESC key (R-32)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isAddTxOpen) {
@@ -70,14 +71,62 @@ export function TransactionModal() {
 
   if (!isAddTxOpen) return null;
 
+  if (wallets.length === 0) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="no-wallet-dialog-title"
+      >
+        <div className="w-full max-w-md bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center shadow-xl">
+          <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center mb-3">
+            <Wallet className="w-6 h-6" aria-hidden="true" />
+          </div>
+          <h2 id="no-wallet-dialog-title" className="text-base font-bold text-slate-900 dark:text-white">
+            Belum Ada Dompet
+          </h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 mb-6 leading-relaxed">
+            Anda harus menambahkan setidaknya satu dompet terlebih dahulu sebelum mencatat pemasukan atau pengeluaran.
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={handleClose}
+              className="tap-target px-4 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            >
+              Tutup
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                handleClose();
+                setIsAddWalletOpen(true);
+              }}
+              className="tap-target px-4 py-2 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition-colors"
+            >
+              Tambah Dompet Baru
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const amount = parseNumericInput(amountInput);
     if (amount <= 0 || !walletId) return;
 
-    if (type === 'transfer' && walletId === targetWalletId) {
-      alert('Dompet asal dan dompet tujuan tidak boleh sama.');
-      return;
+    if (type === 'transfer') {
+      if (wallets.length < 2) {
+        alert('Fitur transfer memerlukan minimal dua dompet terdaftar.');
+        return;
+      }
+      if (walletId === targetWalletId) {
+        alert('Dompet asal dan dompet tujuan tidak boleh sama.');
+        return;
+      }
     }
 
     setIsSubmitting(true);
@@ -107,14 +156,13 @@ export function TransactionModal() {
       aria-labelledby="tx-modal-title"
     >
       <div className="w-full max-w-lg bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden my-8">
-        {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
           <div>
             <h2 id="tx-modal-title" className="text-base font-bold text-slate-900 dark:text-white">
               Tambah Transaksi Manual
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Catat pemasukan, pengeluaran harian, atau mutasi saldo antar dompet
+              Catat pemasukan, pengeluaran, atau mutasi saldo antar dompet
             </p>
           </div>
           <button
@@ -127,7 +175,6 @@ export function TransactionModal() {
           </button>
         </div>
 
-        {/* Transaction Type Segmented Control */}
         <div className="p-5 pb-0">
           <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80" role="tablist">
             <button
@@ -135,7 +182,7 @@ export function TransactionModal() {
               role="tab"
               aria-selected={type === 'expense'}
               onClick={() => handleTypeChange('expense')}
-              className={`tap-target py-2 px-3 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+              className={`tap-target py-2 px-3 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-colors ${
                 type === 'expense'
                   ? 'bg-rose-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -149,7 +196,7 @@ export function TransactionModal() {
               role="tab"
               aria-selected={type === 'income'}
               onClick={() => handleTypeChange('income')}
-              className={`tap-target py-2 px-3 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+              className={`tap-target py-2 px-3 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-colors ${
                 type === 'income'
                   ? 'bg-emerald-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -163,7 +210,7 @@ export function TransactionModal() {
               role="tab"
               aria-selected={type === 'transfer'}
               onClick={() => handleTypeChange('transfer')}
-              className={`tap-target py-2 px-3 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+              className={`tap-target py-2 px-3 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-colors ${
                 type === 'transfer'
                   ? 'bg-indigo-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -175,9 +222,7 @@ export function TransactionModal() {
           </div>
         </div>
 
-        {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
-          {/* Nominal Input */}
           <div>
             <div className="flex items-center justify-between mb-1">
               <label htmlFor="tx-amount" className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
@@ -213,7 +258,13 @@ export function TransactionModal() {
             </div>
           </div>
 
-          {/* Wallet Selector */}
+          {type === 'transfer' && wallets.length < 2 && (
+            <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+              <span>Transfer saldo memerlukan minimal dua dompet. Tambahkan dompet tujuan terlebih dahulu.</span>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label htmlFor="tx-wallet" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
@@ -222,7 +273,7 @@ export function TransactionModal() {
               <select
                 id="tx-wallet"
                 value={walletId}
-                onChange={(e) => setWalletId(e.target.value)}
+                onChange={(e) => setSelectedWalletId(e.target.value)}
                 className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
                 {wallets.map((w) => (
@@ -233,7 +284,6 @@ export function TransactionModal() {
               </select>
             </div>
 
-            {/* Target Wallet if Transfer */}
             {type === 'transfer' ? (
               <div>
                 <label htmlFor="tx-target-wallet" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
@@ -242,8 +292,9 @@ export function TransactionModal() {
                 <select
                   id="tx-target-wallet"
                   value={targetWalletId}
-                  onChange={(e) => setTargetWalletId(e.target.value)}
-                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  onChange={(e) => setSelectedTargetWalletId(e.target.value)}
+                  disabled={wallets.length < 2}
+                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-50"
                 >
                   {wallets.map((w) => (
                     <option key={w.id} value={w.id}>
@@ -253,7 +304,6 @@ export function TransactionModal() {
                 </select>
               </div>
             ) : (
-              /* Kategori */
               <div>
                 <label htmlFor="tx-category" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Kategori
@@ -274,20 +324,19 @@ export function TransactionModal() {
             )}
           </div>
 
-          {/* Deskripsi / Catatan */}
           <div>
             <label htmlFor="tx-desc" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-              Catatan / Deskripsi
+              Catatan / Keterangan
             </label>
             <input
               id="tx-desc"
               type="text"
               placeholder={
                 type === 'expense'
-                  ? 'Contoh: Nasi padang siang, Belanja mingguan Indomaret'
+                  ? 'Contoh: Makan siang, Belanja kebutuhan harian'
                   : type === 'income'
-                  ? 'Contoh: Transfer gaji kantor, Hasil freelance website'
-                  : 'Contoh: Top up GoPay dari BCA'
+                  ? 'Contoh: Gaji bulanan, Pendapatan proyek lepas'
+                  : 'Contoh: Transfer dana antar rekening'
               }
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -295,7 +344,6 @@ export function TransactionModal() {
             />
           </div>
 
-          {/* Tanggal Transaksi */}
           <div>
             <label htmlFor="tx-date" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
               Tanggal Transaksi
@@ -309,7 +357,6 @@ export function TransactionModal() {
             />
           </div>
 
-          {/* Action Buttons */}
           <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
             <button
               type="button"
@@ -320,7 +367,7 @@ export function TransactionModal() {
             </button>
             <button
               type="submit"
-              disabled={isSubmitting || numericAmount <= 0}
+              disabled={isSubmitting || numericAmount <= 0 || (type === 'transfer' && wallets.length < 2)}
               className={`tap-target px-5 py-2 text-xs font-semibold text-white rounded-lg transition-colors disabled:opacity-50 ${
                 type === 'expense'
                   ? 'bg-rose-600 hover:bg-rose-700'

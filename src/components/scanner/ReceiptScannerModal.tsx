@@ -27,19 +27,19 @@ const EXPENSE_CATEGORIES = [
 ];
 
 export function ReceiptScannerModal() {
-  const { isScannerOpen, setIsScannerOpen, wallets, addTransaction } = useFinance();
+  const { isScannerOpen, setIsScannerOpen, setIsAddWalletOpen, wallets, addTransaction } = useFinance();
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanStatus, setScanStatus] = useState('');
   const [scanProgress, setScanProgress] = useState(0);
 
-  // Extracted values
   const [merchant, setMerchant] = useState('');
   const [date, setDate] = useState('2024-11-18');
   const [totalInput, setTotalInput] = useState('');
   const [category, setCategory] = useState('Belanja Harian');
-  const [walletId, setWalletId] = useState(wallets[0]?.id || '');
+  const [selectedWalletId, setSelectedWalletId] = useState('');
+  const walletId = selectedWalletId || wallets[0]?.id || '';
   const [rawText, setRawText] = useState('');
   const [showRawText, setShowRawText] = useState(false);
   const [hasScanned, setHasScanned] = useState(false);
@@ -65,7 +65,6 @@ export function ReceiptScannerModal() {
     resetState();
   }, [setIsScannerOpen, resetState]);
 
-  // Handle ESC key (R-32)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isScannerOpen) {
@@ -77,6 +76,48 @@ export function ReceiptScannerModal() {
   }, [isScannerOpen, handleClose]);
 
   if (!isScannerOpen) return null;
+
+  if (wallets.length === 0) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="no-wallet-scanner-title"
+      >
+        <div className="w-full max-w-md bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center shadow-xl">
+          <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center mb-3">
+            <ScanLine className="w-6 h-6" aria-hidden="true" />
+          </div>
+          <h2 id="no-wallet-scanner-title" className="text-base font-bold text-slate-900 dark:text-white">
+            Belum Ada Dompet
+          </h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 mb-6 leading-relaxed">
+            Tambahkan dompet terlebih dahulu agar nominal belanja pada struk dapat langsung dipotongkan dari saldo dompet Anda.
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={handleClose}
+              className="tap-target px-4 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            >
+              Tutup
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                handleClose();
+                setIsAddWalletOpen(true);
+              }}
+              className="tap-target px-4 py-2 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition-colors"
+            >
+              Tambah Dompet Baru
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const processFile = async (file: File) => {
     setErrorMsg('');
@@ -428,7 +469,7 @@ export function ReceiptScannerModal() {
                   <select
                     id="scan-wallet"
                     value={walletId}
-                    onChange={(e) => setWalletId(e.target.value)}
+                    onChange={(e) => setSelectedWalletId(e.target.value)}
                     className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
                     {wallets.map((w) => (

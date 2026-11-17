@@ -33,11 +33,9 @@ interface FinanceContextType {
   activeTab: 'dashboard' | 'wallets' | 'transactions' | 'debts' | 'scanner';
   setActiveTab: (tab: 'dashboard' | 'wallets' | 'transactions' | 'debts' | 'scanner') => void;
   toggleTheme: () => void;
-  // Dompet
   addWallet: (data: { name: string; type: WalletType; balance: number; account_number?: string; color?: string }) => Promise<void>;
   updateWallet: (id: string, data: Partial<Wallet>) => Promise<void>;
   deleteWallet: (id: string) => Promise<boolean>;
-  // Transaksi
   addTransaction: (data: {
     wallet_id: string;
     type: TransactionType;
@@ -50,7 +48,6 @@ interface FinanceContextType {
     receipt_data?: { merchant?: string; raw_text?: string };
   }) => Promise<void>;
   deleteTransaction: (id: string) => Promise<void>;
-  // Utang & Piutang
   addDebt: (data: {
     type: DebtType;
     person_name: string;
@@ -63,17 +60,14 @@ interface FinanceContextType {
   updateDebt: (id: string, updates: Partial<Debt>) => Promise<void>;
   deleteDebt: (id: string) => Promise<void>;
   recordDebtPayment: (debtId: string, paymentAmount: number, walletId?: string) => Promise<void>;
-  // Akun / Auth
   login: (identifier: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   register: (username: string, email: string, pass: string, fullName: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
-  // Perhitungan
   totalBalance: number;
   totalIncomeThisMonth: number;
   totalExpenseThisMonth: number;
   totalPayable: number;
   totalReceivable: number;
-  // Modal State Controls
   isAddTxOpen: boolean;
   setIsAddTxOpen: (open: boolean) => void;
   isAddWalletOpen: boolean;
@@ -119,7 +113,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
   const [editingWallet, setEditingWallet] = useState<Wallet | null>(null);
   const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
 
-  // Inisialisasi tema
   useEffect(() => {
     const timer = setTimeout(() => {
       const savedTheme = localStorage.getItem('sakurapi_theme') as 'light' | 'dark';
@@ -155,7 +148,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Inisialisasi data dari Supabase atau LocalStorage
   useEffect(() => {
     let isMounted = true;
 
@@ -183,7 +175,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
               });
             }
 
-            // Ambil dompet dari Supabase
             const { data: dbWallets } = await supabase
               .from('wallets')
               .select('*')
@@ -194,7 +185,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
               setWallets(dbWallets);
             }
 
-            // Ambil transaksi dari Supabase
             const { data: dbTx } = await supabase
               .from('transactions')
               .select('*')
@@ -205,7 +195,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
               setTransactions(dbTx);
             }
 
-            // Ambil utang dari Supabase
             const { data: dbDebts } = await supabase
               .from('debts')
               .select('*')
@@ -216,7 +205,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
               setDebts(dbDebts);
             }
           } else {
-            // Belum login ke Supabase, gunakan LocalStorage
             loadLocal();
           }
         } catch (e) {
@@ -281,7 +269,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Perhitungan Keuangan
   const totalBalance = useMemo(() => {
     return wallets.reduce((sum, w) => sum + (Number(w.balance) || 0), 0);
   }, [wallets]);
@@ -312,7 +299,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     return { totalIncomeThisMonth: inc, totalExpenseThisMonth: exp };
   }, [transactions, currentDateInfo]);
 
-  // Perhitungan Utang & Piutang
   const { totalPayable, totalReceivable } = useMemo(() => {
     let payable = 0;
     let receivable = 0;
@@ -331,7 +317,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     return { totalPayable: payable, totalReceivable: receivable };
   }, [debts]);
 
-  // Tambah Dompet
   const addWallet = async (data: {
     name: string;
     type: WalletType;
@@ -401,13 +386,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  // Hapus Dompet
   const deleteWallet = async (id: string): Promise<boolean> => {
-    if (wallets.length <= 1) {
-      alert('Anda harus memiliki setidaknya satu dompet aktif.');
-      return false;
-    }
-
     if (isSupabaseConfigured && supabase && user && !user.id.startsWith('usr-default-')) {
       try {
         await supabase.from('wallets').delete().eq('id', id);
@@ -501,7 +480,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Hapus Transaksi
   const deleteTransaction = async (id: string) => {
     const tx = transactions.find((t) => t.id === id);
     if (!tx) return;
@@ -537,7 +515,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Tambah Utang / Piutang
   const addDebt = async (data: {
     type: DebtType;
     person_name: string;
@@ -607,7 +584,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Update Utang / Piutang
   const updateDebt = async (id: string, updates: Partial<Debt>) => {
     setDebts((prev) =>
       prev.map((d) => (d.id === id ? { ...d, ...updates, updated_at: new Date().toISOString() } : d))
@@ -628,7 +604,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Hapus Utang / Piutang
   const deleteDebt = async (id: string) => {
     setDebts((prev) => prev.filter((d) => d.id !== id));
 
@@ -641,7 +616,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Catat Pembayaran / Pelunasan Utang
   const recordDebtPayment = async (debtId: string, paymentAmount: number, walletId?: string) => {
     const debt = debts.find((d) => d.id === debtId);
     if (!debt || paymentAmount <= 0) return;
