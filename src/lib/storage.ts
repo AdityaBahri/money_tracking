@@ -180,16 +180,15 @@ export function saveStoredDebts(debts: Debt[]): void {
 }
 
 export function loadStoredUser(): UserProfile | null {
-  if (typeof window === 'undefined') return DEFAULT_USER;
+  if (typeof window === 'undefined') return null;
   try {
     const raw = localStorage.getItem(USER_KEY);
     if (!raw) {
-      localStorage.setItem(USER_KEY, JSON.stringify(DEFAULT_USER));
-      return DEFAULT_USER;
+      return null;
     }
     return JSON.parse(raw);
   } catch {
-    return DEFAULT_USER;
+    return null;
   }
 }
 

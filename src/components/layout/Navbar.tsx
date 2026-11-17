@@ -6,7 +6,6 @@ import {
   WalletCards,
   Sun,
   Moon,
-  Database,
   User,
   LogOut,
   ChevronDown,
@@ -17,9 +16,7 @@ export function Navbar() {
     user,
     theme,
     toggleTheme,
-    isSupabase,
     setIsAuthOpen,
-    setIsSupabaseModalOpen,
     logout,
   } = useFinance();
 
@@ -48,28 +45,8 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Right Actions: Supabase Status, Theme Toggle, User Profile */}
+        {/* Right Actions: Theme Toggle, User Profile */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Supabase Status Pill */}
-          <button
-            type="button"
-            onClick={() => setIsSupabaseModalOpen(true)}
-            className="tap-target px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-1.5"
-            title="Klik untuk melihat konfigurasi database Supabase"
-            aria-label="Status database Supabase"
-          >
-            <Database className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
-            <span className="hidden sm:inline">
-              {isSupabase ? 'Supabase Terhubung' : 'Penyimpanan Lokal'}
-            </span>
-            <span
-              className={`w-2 h-2 rounded-full ${
-                isSupabase ? 'bg-emerald-500' : 'bg-amber-500'
-              }`}
-              aria-hidden="true"
-            />
-          </button>
-
           {/* Theme Toggle (R-21 & R-34) */}
           <button
             type="button"

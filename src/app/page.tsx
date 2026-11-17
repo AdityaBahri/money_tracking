@@ -14,12 +14,35 @@ import { WalletModal } from '@/components/wallets/WalletModal';
 import { DebtModal } from '@/components/debts/DebtModal';
 import { DebtPaymentModal } from '@/components/debts/DebtPaymentModal';
 import { ReceiptScannerModal } from '@/components/scanner/ReceiptScannerModal';
+import { AuthPage } from '@/components/auth/AuthPage';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { SupabaseConfigModal } from '@/components/settings/SupabaseConfigModal';
 import { Loader2 } from 'lucide-react';
 
 export default function HomePage() {
-  const { activeTab, isLoading, editingWallet, isAddWalletOpen, editingDebt, isAddDebtOpen } = useFinance();
+  const {
+    user,
+    activeTab,
+    isLoading,
+    editingWallet,
+    isAddWalletOpen,
+    editingDebt,
+    isAddDebtOpen,
+  } = useFinance();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0B0F17] text-slate-400">
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-600 mb-3" aria-hidden="true" />
+        <p className="text-sm font-medium">Memuat data...</p>
+      </div>
+    );
+  }
+
+  // Jika belum ada akun yang masuk/terdaftar, arahkan ke halaman pendaftaran
+  if (!user) {
+    return <AuthPage />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0B0F17] transition-colors">

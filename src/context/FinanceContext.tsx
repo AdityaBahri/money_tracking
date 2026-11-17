@@ -125,12 +125,20 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
       const savedTheme = localStorage.getItem('sakurapi_theme') as 'light' | 'dark';
       if (savedTheme) {
         setTheme(savedTheme);
-        document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+        if (savedTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
       } else {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const initial = prefersDark ? 'dark' : 'light';
         setTheme(initial);
-        document.documentElement.classList.toggle('dark', initial === 'dark');
+        if (initial === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
       }
     }, 0);
     return () => clearTimeout(timer);
@@ -140,7 +148,11 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     const next = theme === 'light' ? 'dark' : 'light';
     setTheme(next);
     localStorage.setItem('sakurapi_theme', next);
-    document.documentElement.classList.toggle('dark', next === 'dark');
+    if (next === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   // Inisialisasi data dari Supabase atau LocalStorage
