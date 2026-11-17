@@ -13,21 +13,26 @@ Aplikasi pencatatan keuangan pribadi (single-user money tracker) modern, respons
 3. **Riwayat Pemasukan & Pengeluaran**:
    - Filter berdasarkan jenis (Semua, Pengeluaran, Pemasukan, Transfer).
    - Filter spesifik berdasarkan dompet dan pencarian nama merchant/kategori.
-4. **Pindai Struk Belanja Otomatis (OCR)**:
+4. **Catat Utang & Piutang**:
+   - Pencatatan utang saya (kewajiban bayar) dan piutang saya (uang yang dipinjam orang lain).
+   - Opsi penyesuaian saldo dompet otomatis saat meminjam (pemasukan kas) atau meminjamkan (pengeluaran kas).
+   - Indikator progres pembayaran persentase, tanggal jatuh tempo, dan status lunas/sebagian/belum bayar.
+   - Fitur bayar cicil atau pelunasan penuh dengan pemotongan otomatis dari dompet yang dipilih.
+5. **Pindai Struk Belanja Otomatis (OCR)**:
    - Ambil foto langsung melalui kamera ponsel atau unggah file struk belanja.
    - Pemrosesan OCR (Optical Character Recognition) via Tesseract.js di sisi peramban.
    - Otomatis mengekstrak nama toko, tanggal, dan total nominal tagihan dengan dukungan pratinjau dan konfirmasi sebelum disimpan.
    - Fitur pengujian cepat dengan sampel struk belanja ritel.
-5. **Pencatatan Pemasukan & Transfer Manual**:
+6. **Pencatatan Pemasukan & Transfer Manual**:
    - Form pencatatan pemasukan dengan kategori lengkap (Gaji, Bonus, Freelance, Investasi, dll.).
    - Fitur transfer saldo antar dompet (misal: top-up GoPay dari BCA) tanpa merusak metrik pendapatan riil.
-6. **Autentikasi Pengguna**:
+7. **Autentikasi Pengguna**:
    - Pendaftaran dan masuk akun menggunakan **username** atau **alamat email** serta kata sandi.
    - Skema akun tunggal terisolasi (single-tenant) dengan Row Level Security (RLS) Supabase.
-7. **Mode Dual-Storage**:
+8. **Mode Dual-Storage**:
    - Jika Supabase belum dikonfigurasi, aplikasi otomatis berjalan dalam mode penyimpanan lokal (Local Storage) sehingga dapat langsung dicoba secara offline tanpa konfigurasi awal.
    - Begitu kredensial Supabase dimasukkan, data langsung tersinkronisasi ke PostgreSQL.
-8. **Responsif Mobile & Desktop**:
+9. **Responsif Mobile & Desktop**:
    - Mobile: Navigasi bawah (Bottom Navigation) yang nyaman dijangkau satu tangan dengan tap target minimal 44px.
    - Desktop: Sidebar ergonomis dengan kontrol ringkas dan status koneksi database.
    - Dukungan tema Terang (Light) dan Gelap (Dark) dengan rasio kontras WCAG AA.
