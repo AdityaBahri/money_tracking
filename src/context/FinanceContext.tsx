@@ -656,10 +656,27 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
 
   // Autentikasi Pengguna
   const login = async (identifier: string, pass: string): Promise<{ success: boolean; error?: string }> => {
-    const emailToUse = identifier.includes('@') ? identifier : `${identifier}@sakurapi.local`;
+    let emailToUse = identifier.trim();
 
     if (isSupabaseConfigured && supabase) {
       try {
+        try {
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ identifier: identifier.trim() }),
+          });
+          const json = await res.json();
+          if (json.success && json.email) {
+            emailToUse = json.email;
+          }
+        } catch (apiErr) {
+          console.warn('Gagal memverifikasi identifier via API:', apiErr);
+          if (!identifier.includes('@')) {
+            emailToUse = `${identifier.trim().toLowerCase()}@sakurapi.local`;
+          }
+        }
+
         const { data, error } = await supabase.auth.signInWithPassword({
           email: emailToUse,
           password: pass,
@@ -688,13 +705,22 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
           const { data: dbWallets } = await supabase
             .from('wallets')
             .select('*')
-            .eq('user_id', data.user.id);
+            .eq('user_id', data.user.id)
+            .order('created_at', { ascending: true });
           if (dbWallets) setWallets(dbWallets);
+
+          const { data: dbTx } = await supabase
+            .from('transactions')
+            .select('*')
+            .eq('user_id', data.user.id)
+            .order('transaction_date', { ascending: false });
+          if (dbTx) setTransactions(dbTx);
 
           const { data: dbDebts } = await supabase
             .from('debts')
             .select('*')
-            .eq('user_id', data.user.id);
+            .eq('user_id', data.user.id)
+            .order('created_at', { ascending: false });
           if (dbDebts) setDebts(dbDebts);
 
           return { success: true };
@@ -722,33 +748,48 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     pass: string,
     fullName: string
   ): Promise<{ success: boolean; error?: string }> => {
-    const emailToUse = email.trim() ? email : `${username.trim()}@sakurapi.local`;
-
     if (isSupabaseConfigured && supabase) {
       try {
-        const { data, error } = await supabase.auth.signUp({
-          email: emailToUse,
-          password: pass,
-          options: {
-            data: {
-              username: username.trim(),
-              full_name: fullName.trim(),
-            },
-          },
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: username.trim(),
+            email: email.trim(),
+            password: pass,
+            fullName: fullName.trim(),
+          }),
         });
 
-        if (error) return { success: false, error: error.message };
+        const json = await res.json();
+        if (!json.success) {
+          return { success: false, error: json.error || 'Pendaftaran gagal' };
+        }
+
+        const emailUsed = json.email;
+
+        const { data, error: loginError } = await supabase.auth.signInWithPassword({
+          email: emailUsed,
+          password: pass,
+        });
+
+        if (loginError) {
+          return { success: false, error: loginError.message };
+        }
 
         if (data.user) {
           const newUser: UserProfile = {
             id: data.user.id,
             username: username.trim(),
-            email: emailToUse,
-            full_name: fullName.trim(),
+            email: emailUsed,
+            full_name: fullName.trim() || username.trim(),
             currency: 'IDR',
           };
           setUser(newUser);
           saveStoredUser(newUser);
+          setWallets([]);
+          setTransactions([]);
+          setDebts([]);
           return { success: true };
         }
       } catch (err: unknown) {
@@ -759,12 +800,15 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     const localUser: UserProfile = {
       id: `usr-${Date.now()}`,
       username: username.trim(),
-      email: emailToUse,
+      email: email.trim() || `${username.trim()}@sakurapi.local`,
       full_name: fullName.trim() || username.trim(),
       currency: 'IDR',
     };
     setUser(localUser);
     saveStoredUser(localUser);
+    setWallets([]);
+    setTransactions([]);
+    setDebts([]);
     return { success: true };
   };
 

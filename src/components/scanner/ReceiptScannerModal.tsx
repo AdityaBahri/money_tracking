@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useFinance } from '@/context/FinanceContext';
 import { scanReceiptImage } from '@/lib/ocr';
 import { formatRupiah, parseNumericInput } from '@/lib/formatters';
+import { supabase } from '@/lib/supabase';
 import {
   X,
   Camera,
@@ -27,7 +28,7 @@ const EXPENSE_CATEGORIES = [
 ];
 
 export function ReceiptScannerModal() {
-  const { isScannerOpen, setIsScannerOpen, setIsAddWalletOpen, wallets, addTransaction } = useFinance();
+  const { isScannerOpen, setIsScannerOpen, setIsAddWalletOpen, wallets, addTransaction, user } = useFinance();
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isScanning, setIsScanning] = useState(false);
@@ -214,6 +215,43 @@ export function ReceiptScannerModal() {
     const amount = parseNumericInput(totalInput);
     if (amount <= 0 || !walletId) return;
 
+    let receiptUrl: string | undefined = undefined;
+
+    if (imagePreview && supabase && user && !user.id.startsWith('usr-default-') && !user.id.startsWith('usr-')) {
+      try {
+        const parts = imagePreview.split(',');
+        if (parts.length === 2) {
+          const mimeMatch = parts[0].match(/:(.*?);/);
+          const mimeType = mimeMatch ? mimeMatch[1] : 'image/png';
+          const bstr = atob(parts[1]);
+          let n = bstr.length;
+          const u8arr = new Uint8Array(n);
+          while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+          }
+          const fileBlob = new Blob([u8arr], { type: mimeType });
+          const fileExt = mimeType.split('/')[1] || 'png';
+          const filePath = `${user.id}/${Date.now()}.${fileExt}`;
+
+          const { error: uploadErr } = await supabase.storage
+            .from('receipts')
+            .upload(filePath, fileBlob, {
+              contentType: mimeType,
+              upsert: true,
+            });
+
+          if (!uploadErr) {
+            const { data: urlData } = supabase.storage.from('receipts').getPublicUrl(filePath);
+            receiptUrl = urlData.publicUrl;
+          } else {
+            console.warn('Gagal mengunggah foto struk ke Supabase Storage:', uploadErr);
+          }
+        }
+      } catch (err) {
+        console.warn('Terjadi kesalahan saat memproses unggahan struk:', err);
+      }
+    }
+
     await addTransaction({
       wallet_id: walletId,
       type: 'expense',
@@ -221,6 +259,7 @@ export function ReceiptScannerModal() {
       category_name: category,
       description: merchant ? `Belanja di ${merchant}` : 'Pengeluaran dari Struk',
       transaction_date: date,
+      receipt_url: receiptUrl,
       receipt_data: {
         merchant,
         raw_text: rawText,
