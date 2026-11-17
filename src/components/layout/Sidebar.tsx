@@ -39,10 +39,10 @@ export function Sidebar() {
         <span className="text-[11px] font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Total Saldo Terkumpul
         </span>
-        <div className="text-xl font-bold text-slate-900 dark:text-white mt-1 truncate">
+        <div className="text-xl font-bold text-slate-900 dark:text-white mt-1 truncate" suppressHydrationWarning>
           {formatRupiah(totalBalance)}
         </div>
-        <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+        <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 dark:text-emerald-400 font-medium" suppressHydrationWarning>
           <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
           <span>{wallets.length} dompet aktif</span>
         </div>

@@ -1,19 +1,17 @@
 import { WalletType } from '@/types/finance';
 
 /**
- * Format angka ke format mata uang Rupiah Indonesia
+ * Format angka ke format mata uang Rupiah Indonesia secara deterministik
+ * Menghindari perbedaan spasi/tanda mata uang antara SSR (Node.js) dan Browser (Client)
  * Contoh: 1500000 -> "Rp 1.500.000"
  */
 export function formatRupiah(amount: number, options?: { showSign?: boolean; isExpense?: boolean }): string {
   const isNegative = amount < 0;
-  const absAmount = Math.abs(amount);
-  
-  const formatted = new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(absAmount);
+  const absAmount = Math.round(Math.abs(amount) || 0);
+
+  // Format pemisah ribuan titik (.) khas standar Indonesia
+  const formattedNumber = absAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const formatted = `Rp ${formattedNumber}`;
 
   if (options?.showSign) {
     if (options.isExpense || isNegative) {
@@ -26,42 +24,41 @@ export function formatRupiah(amount: number, options?: { showSign?: boolean; isE
 }
 
 /**
- * Format tanggal ke format bahasa Indonesia
+ * Format tanggal ke format bahasa Indonesia secara deterministik
  * Contoh: "2024-11-18" -> "18 Nov 2024"
  */
 export function formatTanggalIndo(dateString: string): string {
   if (!dateString) return '';
-  
+
+  const MONTHS_INDO = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+    'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+  ];
+
   try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return dateString;
+    // Tangani format "YYYY-MM-DD" atau ISO string
+    const datePart = dateString.split('T')[0];
+    const parts = datePart.split('-');
 
-    const today = new Date();
-    const isToday =
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
+    if (parts.length === 3) {
+      const year = parts[0];
+      const monthIdx = parseInt(parts[1], 10) - 1;
+      const day = parseInt(parts[2], 10);
 
-    if (isToday) {
-      return 'Hari ini';
+      if (monthIdx >= 0 && monthIdx < 12 && !isNaN(day)) {
+        return `${day} ${MONTHS_INDO[monthIdx]} ${year}`;
+      }
     }
 
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const isYesterday =
-      date.getDate() === yesterday.getDate() &&
-      date.getMonth() === yesterday.getMonth() &&
-      date.getFullYear() === yesterday.getFullYear();
-
-    if (isYesterday) {
-      return 'Kemarin';
+    const d = new Date(dateString);
+    if (!isNaN(d.getTime())) {
+      const day = d.getDate();
+      const monthIdx = d.getMonth();
+      const year = d.getFullYear();
+      return `${day} ${MONTHS_INDO[monthIdx]} ${year}`;
     }
 
-    return new Intl.DateTimeFormat('id-ID', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    }).format(date);
+    return dateString;
   } catch {
     return dateString;
   }

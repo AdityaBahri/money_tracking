@@ -40,10 +40,10 @@ export function BalanceOverview() {
               <Wallet className="w-4 h-4 text-emerald-400" aria-hidden="true" />
               <span>Total Uang Dari Semua Dompet</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-1">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-1" suppressHydrationWarning>
               {formatRupiah(totalBalance)}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-2">
+            <p className="text-xs sm:text-sm text-slate-400 mt-2" suppressHydrationWarning>
               Akumulasi saldo riil dari {wallets.length} dompet (rekening bank, e-wallet, dan uang tunai)
             </p>
           </div>
