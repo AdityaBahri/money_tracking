@@ -62,7 +62,7 @@ export function WalletList() {
             }}
             className="tap-target px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 transition-colors"
           >
-            <Plus className="w-4 h-4 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+            <Plus className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
             <span>Tambah Dompet</span>
           </button>
         )}
@@ -85,7 +85,7 @@ export function WalletList() {
               setEditingWallet(null);
               setIsAddWalletOpen(true);
             }}
-            className="tap-target px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors"
+            className="tap-target px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" aria-hidden="true" />
             <span>Tambah Dompet Sekarang</span>
@@ -165,12 +165,12 @@ export function WalletList() {
               setEditingWallet(null);
               setIsAddWalletOpen(true);
             }}
-            className="p-6 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 bg-slate-50/50 dark:bg-slate-900/30 flex flex-col items-center justify-center text-center transition-colors group min-h-[140px]"
+            className="p-6 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-slate-50/50 dark:bg-slate-900/30 flex flex-col items-center justify-center text-center transition-colors group min-h-[140px]"
           >
-            <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-950/70 text-slate-600 dark:text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 flex items-center justify-center transition-colors mb-2">
+            <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 group-hover:bg-blue-100 dark:group-hover:bg-blue-950/70 text-slate-600 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 flex items-center justify-center transition-colors mb-2">
               <Plus className="w-5 h-5" aria-hidden="true" />
             </div>
-            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               Tambah Dompet Baru
             </span>
           </button>

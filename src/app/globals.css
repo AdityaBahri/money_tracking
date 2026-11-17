@@ -9,9 +9,9 @@
     --border: #e2e8f0;
     --text-primary: #0f172a;
     --text-secondary: #475569;
-    --brand: #059669;
-    --brand-hover: #047857;
-    --brand-light: #ecfdf5;
+    --brand: #0066ff;
+    --brand-hover: #0052cc;
+    --brand-light: #eff6ff;
     --expense: #e11d48;
     --expense-light: #fff1f2;
   }
@@ -22,9 +22,9 @@
     --border: #23324a;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
-    --brand: #10b981;
-    --brand-hover: #059669;
-    --brand-light: #064e3b;
+    --brand: #3b82f6;
+    --brand-hover: #2563eb;
+    --brand-light: #172554;
     --expense: #f43f5e;
     --expense-light: #4c0519;
   }
@@ -60,7 +60,7 @@
 
   /* R-32: Aksesibilitas keyboard dan focus ring yang jelas */
   :focus-visible {
-    outline: 2px solid #059669;
+    outline: 2px solid #2563eb;
     outline-offset: 2px;
   }
 }

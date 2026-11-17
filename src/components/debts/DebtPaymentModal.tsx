@@ -135,7 +135,7 @@ export function DebtPaymentModal() {
               <button
                 type="button"
                 onClick={handleFullRepayment}
-                className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
+                className="text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline"
               >
                 Lunasi Penuh ({formatRupiah(remaining)})
               </button>
@@ -153,7 +153,7 @@ export function DebtPaymentModal() {
                 placeholder="0"
                 value={paymentInput}
                 onChange={(e) => setPaymentInput(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 text-base font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
+                className="w-full pl-10 pr-3 py-2 text-base font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
               />
             </div>
           </div>
@@ -168,7 +168,7 @@ export function DebtPaymentModal() {
                 id="pay-wallet"
                 value={walletId}
                 onChange={(e) => setWalletId(e.target.value)}
-                className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {wallets.map((w) => (
                   <option key={w.id} value={w.id}>
@@ -191,7 +191,7 @@ export function DebtPaymentModal() {
             <button
               type="submit"
               disabled={isSubmitting || numericPayment <= 0 || numericPayment > remaining}
-              className="tap-target px-5 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+              className="tap-target px-5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
             >
               <CheckCircle className="w-4 h-4" aria-hidden="true" />
               <span>{isSubmitting ? 'Menyimpan...' : 'Konfirmasi Pembayaran'}</span>

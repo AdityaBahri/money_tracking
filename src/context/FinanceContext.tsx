@@ -330,7 +330,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
       type: data.type,
       balance: data.balance,
       account_number: data.account_number || '',
-      color: data.color || 'emerald',
+      color: data.color || 'blue',
       is_primary: wallets.length === 0,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
@@ -346,7 +346,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
             type: data.type,
             balance: data.balance,
             account_number: data.account_number,
-            color: data.color || 'emerald',
+            color: data.color || 'blue',
             is_primary: wallets.length === 0,
           })
           .select()

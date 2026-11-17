@@ -39,7 +39,7 @@ export function SupabaseConfigModal() {
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 flex items-center justify-center">
               <Database className="w-5 h-5" aria-hidden="true" />
             </div>
             <div>
@@ -155,7 +155,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...`}
             <button
               type="button"
               onClick={() => setIsSupabaseModalOpen(false)}
-              className="tap-target w-full py-2.5 px-4 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 rounded-xl transition-colors"
+              className="tap-target w-full py-2.5 px-4 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-xl transition-colors"
             >
               Tutup Panduan
             </button>

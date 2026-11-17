@@ -70,7 +70,7 @@ export function RecentTransactions({ limit }: { limit?: number }) {
             onClick={() => setIsScannerOpen(true)}
             className="tap-target px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition-colors"
           >
-            <ScanLine className="w-4 h-4 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+            <ScanLine className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
             <span>Pindai Struk</span>
           </button>
         </div>
@@ -87,7 +87,7 @@ export function RecentTransactions({ limit }: { limit?: number }) {
               placeholder="Cari transaksi, merchant, atau kategori..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -96,7 +96,7 @@ export function RecentTransactions({ limit }: { limit?: number }) {
             <select
               value={walletFilter}
               onChange={(e) => setWalletFilter(e.target.value)}
-              className="w-full py-2 px-3 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full py-2 px-3 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-label="Filter berdasarkan dompet"
             >
               <option value="all">Semua Dompet</option>

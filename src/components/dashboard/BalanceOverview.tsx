@@ -35,7 +35,7 @@ export function BalanceOverview() {
       <section className="mb-8" aria-label="Panduan Awal Menambahkan Dompet">
         <div className="rounded-2xl p-6 sm:p-8 bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 shadow-sm">
           <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-xs font-semibold mb-3">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 text-xs font-semibold mb-3">
               <Wallet className="w-4 h-4" aria-hidden="true" />
               <span>Mulai Dari Nol</span>
             </div>
@@ -49,7 +49,7 @@ export function BalanceOverview() {
               <button
                 type="button"
                 onClick={() => setIsAddWalletOpen(true)}
-                className="tap-target px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold flex items-center gap-2 transition-colors shadow-sm"
+                className="tap-target px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold flex items-center gap-2 transition-colors shadow-sm"
               >
                 <Plus className="w-4 h-4" aria-hidden="true" />
                 <span>Tambah Dompet Pertama</span>
@@ -67,7 +67,7 @@ export function BalanceOverview() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
-              <Wallet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+              <Wallet className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
               <span>Total Uang Dari Semua Dompet</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mt-1" suppressHydrationWarning>
@@ -82,7 +82,7 @@ export function BalanceOverview() {
             <button
               type="button"
               onClick={() => setIsAddTxOpen(true)}
-              className="tap-target px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-2 transition-colors shadow-sm"
+              className="tap-target px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-2 transition-colors shadow-sm"
             >
               <PlusCircle className="w-4 h-4" aria-hidden="true" />
               <span>Catat Transaksi</span>
@@ -92,7 +92,7 @@ export function BalanceOverview() {
               onClick={() => setIsScannerOpen(true)}
               className="tap-target px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs font-semibold flex items-center gap-2 transition-colors"
             >
-              <ScanLine className="w-4 h-4 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+              <ScanLine className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
               <span>Scan Struk</span>
             </button>
             <button
@@ -181,7 +181,7 @@ export function BalanceOverview() {
             <button
               type="button"
               onClick={() => setActiveTab('debts')}
-              className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline"
+              className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
             >
               Kelola Utang &amp; Piutang
             </button>

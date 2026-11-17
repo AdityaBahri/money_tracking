@@ -160,7 +160,7 @@ export function DebtModal() {
               placeholder="Contoh: Budi Santoso, Toko Sumber Makmur"
               value={personName}
               onChange={(e) => setPersonName(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -186,7 +186,7 @@ export function DebtModal() {
                 placeholder="0"
                 value={amountInput}
                 onChange={(e) => setAmountInput(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 text-base font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
+                className="w-full pl-10 pr-3 py-2 text-base font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
               />
             </div>
           </div>
@@ -201,7 +201,7 @@ export function DebtModal() {
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -216,7 +216,7 @@ export function DebtModal() {
               placeholder="Contoh: Talangan servis kendaraan, Belanja modal kerja"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -228,7 +228,7 @@ export function DebtModal() {
                   type="checkbox"
                   checked={updateWalletBalance}
                   onChange={(e) => setUpdateWalletBalance(e.target.checked)}
-                  className="mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4"
+                  className="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
                 />
                 <span className="text-xs text-slate-700 dark:text-slate-300">
                   {type === 'payable'
@@ -246,7 +246,7 @@ export function DebtModal() {
                     id="debt-wallet"
                     value={walletId}
                     onChange={(e) => setWalletId(e.target.value)}
-                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     {wallets.map((w) => (
                       <option key={w.id} value={w.id}>
@@ -271,7 +271,7 @@ export function DebtModal() {
             <button
               type="submit"
               disabled={isSubmitting || numericAmount <= 0 || !personName.trim()}
-              className="tap-target px-5 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors disabled:opacity-50"
+              className="tap-target px-5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50"
             >
               {isSubmitting ? 'Menyimpan...' : editingDebt ? 'Simpan Perubahan' : 'Catat Pinjaman'}
             </button>

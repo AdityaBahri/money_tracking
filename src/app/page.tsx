@@ -34,7 +34,7 @@ export default function HomePage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0B0F17] text-slate-400">
-        <Loader2 className="w-8 h-8 animate-spin text-emerald-600 mb-3" aria-hidden="true" />
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600 mb-3" aria-hidden="true" />
         <p className="text-sm font-medium">Memuat data...</p>
       </div>
     );
@@ -58,7 +58,7 @@ export default function HomePage() {
         <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-28 md:pb-8 max-w-5xl mx-auto w-full">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-24 text-slate-400">
-              <Loader2 className="w-8 h-8 animate-spin text-emerald-600 mb-3" aria-hidden="true" />
+              <Loader2 className="w-8 h-8 animate-spin text-blue-600 mb-3" aria-hidden="true" />
               <p className="text-sm font-medium">Memuat data dompet, transaksi, dan utang...</p>
             </div>
           ) : (
@@ -109,7 +109,7 @@ export default function HomePage() {
 
               {activeTab === 'scanner' && (
                 <div className="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#131B2A] text-center max-w-lg mx-auto my-6">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 mx-auto flex items-center justify-center mb-3">
                     <Loader2 className="w-6 h-6" aria-hidden="true" />
                   </div>
                   <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
@@ -121,7 +121,7 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={() => setIsScannerOpen(true)}
-                    className="tap-target px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors"
+                    className="tap-target px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors"
                   >
                     <span>Buka Pemindai Struk</span>
                   </button>

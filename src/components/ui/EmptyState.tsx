@@ -27,7 +27,7 @@ export function EmptyState({
         <button
           type="button"
           onClick={onAction}
-          className="tap-target px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-500 rounded-lg transition-colors focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+          className="tap-target px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 rounded-lg transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           {actionText}
         </button>

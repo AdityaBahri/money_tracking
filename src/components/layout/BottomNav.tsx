@@ -18,7 +18,7 @@ export function BottomNav() {
           onClick={() => setActiveTab('dashboard')}
           className={`tap-target flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
             activeTab === 'dashboard'
-              ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+              ? 'text-blue-600 dark:text-blue-400 font-semibold'
               : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
           aria-current={activeTab === 'dashboard' ? 'page' : undefined}
@@ -32,7 +32,7 @@ export function BottomNav() {
           onClick={() => setActiveTab('wallets')}
           className={`tap-target flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
             activeTab === 'wallets'
-              ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+              ? 'text-blue-600 dark:text-blue-400 font-semibold'
               : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
           aria-current={activeTab === 'wallets' ? 'page' : undefined}
@@ -45,7 +45,7 @@ export function BottomNav() {
           <button
             type="button"
             onClick={() => setIsAddTxOpen(true)}
-            className="w-11 h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center border border-emerald-500/20 active:scale-95 transition-transform"
+            className="w-11 h-11 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center border border-blue-500/20 active:scale-95 transition-transform"
             aria-label="Tambah transaksi baru"
           >
             <Plus className="w-5 h-5 stroke-[2.5]" aria-hidden="true" />
@@ -57,7 +57,7 @@ export function BottomNav() {
           onClick={() => setActiveTab('debts')}
           className={`tap-target flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
             activeTab === 'debts'
-              ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+              ? 'text-blue-600 dark:text-blue-400 font-semibold'
               : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
           aria-current={activeTab === 'debts' ? 'page' : undefined}
@@ -71,7 +71,7 @@ export function BottomNav() {
           onClick={() => setActiveTab('transactions')}
           className={`tap-target flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
             activeTab === 'transactions'
-              ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+              ? 'text-blue-600 dark:text-blue-400 font-semibold'
               : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
           aria-current={activeTab === 'transactions' ? 'page' : undefined}

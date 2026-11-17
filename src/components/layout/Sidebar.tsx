@@ -37,7 +37,7 @@ export function Sidebar() {
         <div className="text-xl font-bold text-slate-900 dark:text-white mt-1 truncate" suppressHydrationWarning>
           {formatRupiah(totalBalance)}
         </div>
-        <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 dark:text-emerald-400 font-medium" suppressHydrationWarning>
+        <div className="flex items-center gap-1.5 mt-2 text-xs text-blue-600 dark:text-blue-400 font-medium" suppressHydrationWarning>
           <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
           <span>{wallets.length > 0 ? `${wallets.length} dompet aktif` : 'Belum ada dompet'}</span>
         </div>
@@ -47,7 +47,7 @@ export function Sidebar() {
         <button
           type="button"
           onClick={() => setIsAddTxOpen(true)}
-          className="tap-target w-full px-3.5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs flex items-center justify-center gap-2 transition-colors shadow-xs"
+          className="tap-target w-full px-3.5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs flex items-center justify-center gap-2 transition-colors shadow-xs"
         >
           <PlusCircle className="w-4 h-4" aria-hidden="true" />
           <span>Tambah Transaksi</span>
@@ -57,7 +57,7 @@ export function Sidebar() {
           onClick={() => setIsScannerOpen(true)}
           className="tap-target w-full px-3.5 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/70 text-slate-700 dark:text-slate-200 font-medium text-xs flex items-center justify-center gap-2 transition-colors"
         >
-          <ScanLine className="w-4 h-4 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+          <ScanLine className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
           <span>Pindai Struk Belanja</span>
         </button>
       </div>
@@ -68,7 +68,7 @@ export function Sidebar() {
           onClick={() => setActiveTab('dashboard')}
           className={`tap-target w-full px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
             activeTab === 'dashboard'
-              ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300'
+              ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
           aria-current={activeTab === 'dashboard' ? 'page' : undefined}
@@ -84,7 +84,7 @@ export function Sidebar() {
           onClick={() => setActiveTab('wallets')}
           className={`tap-target w-full px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
             activeTab === 'wallets'
-              ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300'
+              ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
           aria-current={activeTab === 'wallets' ? 'page' : undefined}
@@ -103,7 +103,7 @@ export function Sidebar() {
           onClick={() => setActiveTab('transactions')}
           className={`tap-target w-full px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
             activeTab === 'transactions'
-              ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300'
+              ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
           aria-current={activeTab === 'transactions' ? 'page' : undefined}
@@ -122,7 +122,7 @@ export function Sidebar() {
           onClick={() => setActiveTab('debts')}
           className={`tap-target w-full px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
             activeTab === 'debts'
-              ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300'
+              ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
           aria-current={activeTab === 'debts' ? 'page' : undefined}

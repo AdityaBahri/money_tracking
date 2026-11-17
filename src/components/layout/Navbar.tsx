@@ -42,7 +42,7 @@ export function Navbar() {
               <span className="font-bold text-lg text-slate-900 dark:text-white tracking-tight">
                 SakuRapi
               </span>
-              <span className="hidden sm:inline-block px-2 py-0.5 text-[11px] font-medium rounded-full bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+              <span className="hidden sm:inline-block px-2 py-0.5 text-[11px] font-medium rounded-full bg-blue-50 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                 Keuangan Pribadi
               </span>
             </div>
@@ -79,7 +79,7 @@ export function Navbar() {
                   aria-expanded={isUserMenuOpen}
                   aria-label="Menu akun pengguna"
                 >
-                  <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center text-xs font-bold uppercase">
+                  <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 flex items-center justify-center text-xs font-bold uppercase">
                     {user.username.charAt(0) || 'U'}
                   </div>
                   <span className="text-xs font-semibold max-w-[90px] sm:max-w-[130px] truncate">
@@ -123,7 +123,7 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => setIsAuthOpen(true)}
-                className="tap-target px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                className="tap-target px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs flex items-center gap-1.5 transition-colors shadow-sm"
               >
                 <User className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Masuk / Daftar</span>
