@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SakuRapi (Money Tracking Application)
 
-## Getting Started
+Aplikasi pencatatan keuangan pribadi (single-user money tracker) modern, responsif untuk mobile dan desktop, didukung integrasi database PostgreSQL Supabase dan siap di-hosting langsung ke Vercel.
 
-First, run the development server:
+## Fitur Utama
 
+1. **Dashboard Saldo Multi-Dompet**:
+   - Menghitung dan menampilkan total akumulasi uang dari seluruh dompet aktif secara riil.
+   - Ringkasan pemasukan, pengeluaran, dan arus kas bersih bulanan.
+2. **Manajemen Dompet Fleksibel**:
+   - Tambah, edit, dan hapus dompet bank (BCA, Mandiri, BNI, BRI, Bank Jago, Jenius), e-wallet (GoPay, OVO, Dana, ShopeePay), dan pos uang tunai (cash).
+   - Menampilkan nomor rekening atau nomor ponsel terkait.
+3. **Riwayat Pemasukan & Pengeluaran**:
+   - Filter berdasarkan jenis (Semua, Pengeluaran, Pemasukan, Transfer).
+   - Filter spesifik berdasarkan dompet dan pencarian nama merchant/kategori.
+4. **Pindai Struk Belanja Otomatis (OCR)**:
+   - Ambil foto langsung melalui kamera ponsel atau unggah file struk belanja.
+   - Pemrosesan OCR (Optical Character Recognition) via Tesseract.js di sisi peramban.
+   - Otomatis mengekstrak nama toko, tanggal, dan total nominal tagihan dengan dukungan pratinjau dan konfirmasi sebelum disimpan.
+   - Fitur pengujian cepat dengan sampel struk belanja ritel.
+5. **Pencatatan Pemasukan & Transfer Manual**:
+   - Form pencatatan pemasukan dengan kategori lengkap (Gaji, Bonus, Freelance, Investasi, dll.).
+   - Fitur transfer saldo antar dompet (misal: top-up GoPay dari BCA) tanpa merusak metrik pendapatan riil.
+6. **Autentikasi Pengguna**:
+   - Pendaftaran dan masuk akun menggunakan **username** atau **alamat email** serta kata sandi.
+   - Skema akun tunggal terisolasi (single-tenant) dengan Row Level Security (RLS) Supabase.
+7. **Mode Dual-Storage**:
+   - Jika Supabase belum dikonfigurasi, aplikasi otomatis berjalan dalam mode penyimpanan lokal (Local Storage) sehingga dapat langsung dicoba secara offline tanpa konfigurasi awal.
+   - Begitu kredensial Supabase dimasukkan, data langsung tersinkronisasi ke PostgreSQL.
+8. **Responsif Mobile & Desktop**:
+   - Mobile: Navigasi bawah (Bottom Navigation) yang nyaman dijangkau satu tangan dengan tap target minimal 44px.
+   - Desktop: Sidebar ergonomis dengan kontrol ringkas dan status koneksi database.
+   - Dukungan tema Terang (Light) dan Gelap (Dark) dengan rasio kontras WCAG AA.
+
+---
+
+## Panduan Instalasi & Menjalankan Lokal
+
+### 1. Clone & Install Dependensi
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <url-repositori-anda>
+cd money_tracking
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Jalankan Server Pengembangan
+```bash
+npm run dev
+```
+Buka browser pada alamat [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Konfigurasi Supabase Database
 
-## Learn More
+1. Buka [https://supabase.com](https://supabase.com) dan buat proyek baru.
+2. Buka menu **SQL Editor** pada dashboard Supabase.
+3. Salin dan jalankan seluruh isi file `supabase/schema.sql`.
+4. Buka **Project Settings** > **API**, salin:
+   - **Project URL**
+   - **anon / public key**
+5. Buat file `.env.local` pada direktori root proyek:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://proyek-anda.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI...
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Panduan Hosting ke Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Unggah kode ke repositori GitHub atau GitLab Anda.
+2. Buka [https://vercel.com](https://vercel.com) dan pilih **Add New Project**.
+3. Import repositori proyek `money_tracking`.
+4. Pada bagian **Environment Variables**, tambahkan:
+   - `NEXT_PUBLIC_SUPABASE_URL`: URL proyek Supabase Anda
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Anon public key Supabase Anda
+5. Klik **Deploy**. Vercel akan otomatis melakukan proses build dan aplikasi Anda langsung aktif online.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Lisensi
+Proyek ini dibuat untuk kebutuhan manajemen keuangan pribadi.
