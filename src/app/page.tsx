@@ -8,15 +8,18 @@ import { BottomNav } from '@/components/layout/BottomNav';
 import { BalanceOverview } from '@/components/dashboard/BalanceOverview';
 import { WalletList } from '@/components/dashboard/WalletList';
 import { RecentTransactions } from '@/components/dashboard/RecentTransactions';
+import { DebtList } from '@/components/debts/DebtList';
 import { TransactionModal } from '@/components/transactions/TransactionModal';
 import { WalletModal } from '@/components/wallets/WalletModal';
+import { DebtModal } from '@/components/debts/DebtModal';
+import { DebtPaymentModal } from '@/components/debts/DebtPaymentModal';
 import { ReceiptScannerModal } from '@/components/scanner/ReceiptScannerModal';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { SupabaseConfigModal } from '@/components/settings/SupabaseConfigModal';
 import { Loader2 } from 'lucide-react';
 
 export default function HomePage() {
-  const { activeTab, isLoading } = useFinance();
+  const { activeTab, isLoading, editingWallet, isAddWalletOpen, editingDebt, isAddDebtOpen } = useFinance();
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0B0F17] transition-colors">
@@ -32,7 +35,7 @@ export default function HomePage() {
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-24 text-slate-400">
               <Loader2 className="w-8 h-8 animate-spin text-emerald-600 mb-3" aria-hidden="true" />
-              <p className="text-sm font-medium">Memuat data dompet dan transaksi...</p>
+              <p className="text-sm font-medium">Memuat data dompet, transaksi, dan utang...</p>
             </div>
           ) : (
             <>
@@ -74,6 +77,12 @@ export default function HomePage() {
                 </div>
               )}
 
+              {activeTab === 'debts' && (
+                <div>
+                  <DebtList />
+                </div>
+              )}
+
               {activeTab === 'scanner' && (
                 <div>
                   <div className="mb-6">
@@ -97,7 +106,9 @@ export default function HomePage() {
 
       {/* Global Modals */}
       <TransactionModal />
-      <WalletModal />
+      <WalletModal key={editingWallet?.id || (isAddWalletOpen ? 'wallet-open' : 'wallet-closed')} />
+      <DebtModal key={editingDebt?.id || (isAddDebtOpen ? 'debt-open' : 'debt-closed')} />
+      <DebtPaymentModal />
       <ReceiptScannerModal />
       <AuthModal />
       <SupabaseConfigModal />

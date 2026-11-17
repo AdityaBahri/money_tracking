@@ -2,6 +2,25 @@ export type WalletType = 'bank' | 'ewallet' | 'cash' | 'investment' | 'other';
 
 export type TransactionType = 'income' | 'expense' | 'transfer';
 
+export type DebtType = 'payable' | 'receivable';
+
+export type DebtStatus = 'unpaid' | 'partial' | 'paid';
+
+export interface Debt {
+  id: string;
+  user_id?: string;
+  type: DebtType;
+  person_name: string;
+  amount: number;
+  paid_amount: number;
+  due_date?: string;
+  description?: string;
+  status: DebtStatus;
+  wallet_id?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Wallet {
   id: string;
   user_id?: string;
@@ -57,3 +76,4 @@ export interface ReceiptScanResult {
   rawText: string;
   categorySuggested: string;
 }
+

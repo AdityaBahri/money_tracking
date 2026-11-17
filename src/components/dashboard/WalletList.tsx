@@ -156,3 +156,4 @@ export function WalletList() {
     </section>
   );
 }
+

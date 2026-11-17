@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { useFinance } from '@/context/FinanceContext';
-import { LayoutDashboard, Wallet, ReceiptText, ScanLine, Plus } from 'lucide-react';
+import { LayoutDashboard, Wallet, ReceiptText, HandCoins, Plus } from 'lucide-react';
 
 export function BottomNav() {
-  const { activeTab, setActiveTab, setIsAddTxOpen, setIsScannerOpen } = useFinance();
+  const { activeTab, setActiveTab, setIsAddTxOpen } = useFinance();
 
   return (
     <nav
@@ -55,19 +55,19 @@ export function BottomNav() {
           </button>
         </div>
 
-        {/* Pindai Struk */}
+        {/* Utang */}
         <button
           type="button"
-          onClick={() => setIsScannerOpen(true)}
+          onClick={() => setActiveTab('debts')}
           className={`tap-target flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
-            activeTab === 'scanner'
+            activeTab === 'debts'
               ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
               : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
-          aria-label="Pindai struk belanja dengan kamera atau unggah foto"
+          aria-current={activeTab === 'debts' ? 'page' : undefined}
         >
-          <ScanLine className="w-5 h-5 mb-0.5" aria-hidden="true" />
-          <span className="text-[11px]">Scan Struk</span>
+          <HandCoins className="w-5 h-5 mb-0.5" aria-hidden="true" />
+          <span className="text-[11px]">Utang</span>
         </button>
 
         {/* Riwayat */}
@@ -88,3 +88,4 @@ export function BottomNav() {
     </nav>
   );
 }
+

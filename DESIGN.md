@@ -57,3 +57,4 @@
 - Tanpa data palsu atau angka bohongan (R-17 & R-38). Empty state jelas mengarahkan user untuk membuat dompet atau transaksi pertama.
 - Semua elemen interaktif (filter, modal, form input, hapus, edit, upload/kamera struk, tema) berfungsi penuh (R-26).
 - State lengkap tersedia: Loading skeleton, Empty state, dan Error state (R-27).
+

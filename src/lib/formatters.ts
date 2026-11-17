@@ -95,3 +95,4 @@ export function formatWalletTypeName(type: WalletType): string {
       return 'Lainnya';
   }
 }
+

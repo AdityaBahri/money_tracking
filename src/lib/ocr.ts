@@ -273,3 +273,4 @@ function suggestCategory(merchant: string, fullText: string): string {
 
   return 'Lainnya';
 }
+

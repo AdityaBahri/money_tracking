@@ -18,10 +18,13 @@ export function BalanceOverview() {
     totalBalance,
     totalIncomeThisMonth,
     totalExpenseThisMonth,
+    totalPayable,
+    totalReceivable,
     wallets,
     setIsAddTxOpen,
     setIsScannerOpen,
     setIsAddWalletOpen,
+    setActiveTab,
   } = useFinance();
 
   const netCashflow = totalIncomeThisMonth - totalExpenseThisMonth;
@@ -131,7 +134,37 @@ export function BalanceOverview() {
             </div>
           </div>
         </div>
+
+        {/* Utang & Piutang Quick Info Bar */}
+        {(totalPayable > 0 || totalReceivable > 0) && (
+          <div className="mt-5 pt-4 border-t border-slate-800/60 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div className="flex flex-wrap items-center gap-4 text-slate-300">
+              {totalPayable > 0 && (
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-rose-500" aria-hidden="true" />
+                  <span className="text-slate-400">Utang yang harus dibayar:</span>
+                  <span className="font-bold text-rose-400">{formatRupiah(totalPayable)}</span>
+                </div>
+              )}
+              {totalReceivable > 0 && (
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" aria-hidden="true" />
+                  <span className="text-slate-400">Piutang yang harus ditagih:</span>
+                  <span className="font-bold text-emerald-400">{formatRupiah(totalReceivable)}</span>
+                </div>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => setActiveTab('debts')}
+              className="text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 underline"
+            >
+              Kelola Utang &amp; Piutang
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
 }
+

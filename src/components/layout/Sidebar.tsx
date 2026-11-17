@@ -11,6 +11,7 @@ import {
   Database,
   ArrowUpRight,
   ShieldCheck,
+  HandCoins,
 } from 'lucide-react';
 import { formatRupiah } from '@/lib/formatters';
 
@@ -20,6 +21,7 @@ export function Sidebar() {
     setActiveTab,
     wallets,
     transactions,
+    debts,
     totalBalance,
     setIsAddTxOpen,
     setIsScannerOpen,
@@ -121,6 +123,25 @@ export function Sidebar() {
             {transactions.length}
           </span>
         </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('debts')}
+          className={`tap-target w-full px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
+            activeTab === 'debts'
+              ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-l-4 border-emerald-600'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
+          }`}
+          aria-current={activeTab === 'debts' ? 'page' : undefined}
+        >
+          <div className="flex items-center gap-2.5">
+            <HandCoins className="w-4 h-4" aria-hidden="true" />
+            <span>Catat Utang</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-full text-[11px] bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+            {debts.length}
+          </span>
+        </button>
       </nav>
 
       {/* Database Connection Footer Card */}
@@ -145,3 +166,4 @@ export function Sidebar() {
     </aside>
   );
 }
+

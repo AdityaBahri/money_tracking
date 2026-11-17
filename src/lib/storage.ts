@@ -1,8 +1,38 @@
-import { Wallet, Transaction, UserProfile } from '@/types/finance';
+import { Wallet, Transaction, UserProfile, Debt } from '@/types/finance';
 
 const WALLETS_KEY = 'sakurapi_wallets_v1';
 const TRANSACTIONS_KEY = 'sakurapi_transactions_v1';
+const DEBTS_KEY = 'sakurapi_debts_v1';
 const USER_KEY = 'sakurapi_user_v1';
+
+export const DEFAULT_DEBTS: Debt[] = [
+  {
+    id: 'debt-1',
+    type: 'payable',
+    person_name: 'Budi Santoso',
+    amount: 500000,
+    paid_amount: 0,
+    due_date: '2024-12-01',
+    description: 'Pinjaman talangan servis laptop',
+    status: 'unpaid',
+    wallet_id: 'wallet-bca',
+    created_at: '2024-11-10T10:00:00.000Z',
+    updated_at: '2024-11-10T10:00:00.000Z',
+  },
+  {
+    id: 'debt-2',
+    type: 'receivable',
+    person_name: 'Andi Wijaya',
+    amount: 300000,
+    paid_amount: 150000,
+    due_date: '2024-11-25',
+    description: 'Pinjam uang makan siang dan bensin',
+    status: 'partial',
+    wallet_id: 'wallet-gopay',
+    created_at: '2024-11-05T10:00:00.000Z',
+    updated_at: '2024-11-12T10:00:00.000Z',
+  },
+];
 
 export const DEFAULT_WALLETS: Wallet[] = [
   {
@@ -123,6 +153,29 @@ export function saveStoredTransactions(transactions: Transaction[]): void {
     localStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(transactions));
   } catch (e) {
     console.error('Gagal menyimpan transaksi:', e);
+  }
+}
+
+export function loadStoredDebts(): Debt[] {
+  if (typeof window === 'undefined') return DEFAULT_DEBTS;
+  try {
+    const raw = localStorage.getItem(DEBTS_KEY);
+    if (!raw) {
+      localStorage.setItem(DEBTS_KEY, JSON.stringify(DEFAULT_DEBTS));
+      return DEFAULT_DEBTS;
+    }
+    return JSON.parse(raw);
+  } catch {
+    return DEFAULT_DEBTS;
+  }
+}
+
+export function saveStoredDebts(debts: Debt[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(DEBTS_KEY, JSON.stringify(debts));
+  } catch (e) {
+    console.error('Gagal menyimpan data utang piutang:', e);
   }
 }
 

@@ -1,12 +1,22 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
-import { Wallet, Transaction, UserProfile, WalletType, TransactionType } from '@/types/finance';
+import {
+  Wallet,
+  Transaction,
+  UserProfile,
+  WalletType,
+  TransactionType,
+  Debt,
+  DebtType,
+} from '@/types/finance';
 import {
   loadStoredWallets,
   saveStoredWallets,
   loadStoredTransactions,
   saveStoredTransactions,
+  loadStoredDebts,
+  saveStoredDebts,
   loadStoredUser,
   saveStoredUser,
 } from '@/lib/storage';
@@ -15,12 +25,13 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 interface FinanceContextType {
   wallets: Wallet[];
   transactions: Transaction[];
+  debts: Debt[];
   user: UserProfile | null;
   theme: 'light' | 'dark';
   isLoading: boolean;
   isSupabase: boolean;
-  activeTab: 'dashboard' | 'wallets' | 'transactions' | 'scanner';
-  setActiveTab: (tab: 'dashboard' | 'wallets' | 'transactions' | 'scanner') => void;
+  activeTab: 'dashboard' | 'wallets' | 'transactions' | 'debts' | 'scanner';
+  setActiveTab: (tab: 'dashboard' | 'wallets' | 'transactions' | 'debts' | 'scanner') => void;
   toggleTheme: () => void;
   // Dompet
   addWallet: (data: { name: string; type: WalletType; balance: number; account_number?: string; color?: string }) => Promise<void>;
@@ -39,6 +50,19 @@ interface FinanceContextType {
     receipt_data?: { merchant?: string; raw_text?: string };
   }) => Promise<void>;
   deleteTransaction: (id: string) => Promise<void>;
+  // Utang & Piutang
+  addDebt: (data: {
+    type: DebtType;
+    person_name: string;
+    amount: number;
+    due_date?: string;
+    description?: string;
+    wallet_id?: string;
+    updateWalletBalance?: boolean;
+  }) => Promise<void>;
+  updateDebt: (id: string, updates: Partial<Debt>) => Promise<void>;
+  deleteDebt: (id: string) => Promise<void>;
+  recordDebtPayment: (debtId: string, paymentAmount: number, walletId?: string) => Promise<void>;
   // Akun / Auth
   login: (identifier: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   register: (username: string, email: string, pass: string, fullName: string) => Promise<{ success: boolean; error?: string }>;
@@ -47,11 +71,19 @@ interface FinanceContextType {
   totalBalance: number;
   totalIncomeThisMonth: number;
   totalExpenseThisMonth: number;
+  totalPayable: number;
+  totalReceivable: number;
   // Modal State Controls
   isAddTxOpen: boolean;
   setIsAddTxOpen: (open: boolean) => void;
   isAddWalletOpen: boolean;
   setIsAddWalletOpen: (open: boolean) => void;
+  isAddDebtOpen: boolean;
+  setIsAddDebtOpen: (open: boolean) => void;
+  isDebtPaymentOpen: boolean;
+  setIsDebtPaymentOpen: (open: boolean) => void;
+  selectedDebtForPayment: Debt | null;
+  setSelectedDebtForPayment: (debt: Debt | null) => void;
   isScannerOpen: boolean;
   setIsScannerOpen: (open: boolean) => void;
   isAuthOpen: boolean;
@@ -60,6 +92,8 @@ interface FinanceContextType {
   setIsSupabaseModalOpen: (open: boolean) => void;
   editingWallet: Wallet | null;
   setEditingWallet: (wallet: Wallet | null) => void;
+  editingDebt: Debt | null;
+  setEditingDebt: (debt: Debt | null) => void;
 }
 
 const FinanceContext = createContext<FinanceContextType | undefined>(undefined);
@@ -67,18 +101,23 @@ const FinanceContext = createContext<FinanceContextType | undefined>(undefined);
 export function FinanceProvider({ children }: { children: React.ReactNode }) {
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [debts, setDebts] = useState<Debt[]>([]);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'wallets' | 'transactions' | 'scanner'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'wallets' | 'transactions' | 'debts' | 'scanner'>('dashboard');
 
   // Modals
   const [isAddTxOpen, setIsAddTxOpen] = useState(false);
   const [isAddWalletOpen, setIsAddWalletOpen] = useState(false);
+  const [isAddDebtOpen, setIsAddDebtOpen] = useState(false);
+  const [isDebtPaymentOpen, setIsDebtPaymentOpen] = useState(false);
+  const [selectedDebtForPayment, setSelectedDebtForPayment] = useState<Debt | null>(null);
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isSupabaseModalOpen, setIsSupabaseModalOpen] = useState(false);
   const [editingWallet, setEditingWallet] = useState<Wallet | null>(null);
+  const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
 
   // Inisialisasi tema
   useEffect(() => {
@@ -153,6 +192,17 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
             if (dbTx && isMounted) {
               setTransactions(dbTx);
             }
+
+            // Ambil utang dari Supabase
+            const { data: dbDebts } = await supabase
+              .from('debts')
+              .select('*')
+              .eq('user_id', currentUserId)
+              .order('created_at', { ascending: false });
+
+            if (dbDebts && isMounted) {
+              setDebts(dbDebts);
+            }
           } else {
             // Belum login ke Supabase, gunakan LocalStorage
             loadLocal();
@@ -173,10 +223,12 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     function loadLocal() {
       const storedWallets = loadStoredWallets();
       const storedTx = loadStoredTransactions();
+      const storedDebts = loadStoredDebts();
       const storedUser = loadStoredUser();
       if (isMounted) {
         setWallets(storedWallets);
         setTransactions(storedTx);
+        setDebts(storedDebts);
         setUser(storedUser);
       }
     }
@@ -200,6 +252,12 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
       saveStoredTransactions(transactions);
     }
   }, [transactions, isLoading, user]);
+
+  useEffect(() => {
+    if (!isLoading && (!isSupabaseConfigured || !user?.id?.startsWith('usr-supabase-'))) {
+      saveStoredDebts(debts);
+    }
+  }, [debts, isLoading, user]);
 
   const [currentDateInfo, setCurrentDateInfo] = useState<{ month: number; year: number } | null>(null);
 
@@ -241,6 +299,25 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
 
     return { totalIncomeThisMonth: inc, totalExpenseThisMonth: exp };
   }, [transactions, currentDateInfo]);
+
+  // Perhitungan Utang & Piutang
+  const { totalPayable, totalReceivable } = useMemo(() => {
+    let payable = 0;
+    let receivable = 0;
+
+    for (const d of debts) {
+      if (d.status !== 'paid') {
+        const remaining = Math.max(0, Number(d.amount) - (Number(d.paid_amount) || 0));
+        if (d.type === 'payable') {
+          payable += remaining;
+        } else {
+          receivable += remaining;
+        }
+      }
+    }
+
+    return { totalPayable: payable, totalReceivable: receivable };
+  }, [debts]);
 
   // Tambah Dompet
   const addWallet = async (data: {
@@ -288,7 +365,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    // Fallback lokal
     setWallets((prev) => [...prev, newWallet]);
   };
 
@@ -329,7 +405,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     }
 
     setWallets((prev) => prev.filter((w) => w.id !== id));
-    // Hapus juga transaksi terkait dompet tersebut
     setTransactions((prev) => prev.filter((t) => t.wallet_id !== id && t.target_wallet_id !== id));
     return true;
   };
@@ -383,7 +458,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
 
     setTransactions((prev) => [newTx, ...prev]);
 
-    // Jika Supabase aktif
     if (isSupabaseConfigured && supabase && user && !user.id.startsWith('usr-default-')) {
       try {
         await supabase.from('transactions').insert({
@@ -399,7 +473,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
           receipt_data: data.receipt_data,
         });
 
-        // Sinkronisasi saldo dompet ke database
         if (data.type === 'expense' || data.type === 'income') {
           const targetW = wallets.find((w) => w.id === data.wallet_id);
           if (targetW) {
@@ -421,7 +494,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     const tx = transactions.find((t) => t.id === id);
     if (!tx) return;
 
-    // Kembalikan saldo dompet
     setWallets((prev) =>
       prev.map((w) => {
         if (tx.type === 'expense' && w.id === tx.wallet_id) {
@@ -449,6 +521,149 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
         await supabase.from('transactions').delete().eq('id', id);
       } catch (err) {
         console.error('Gagal menghapus transaksi dari Supabase:', err);
+      }
+    }
+  };
+
+  // Tambah Utang / Piutang
+  const addDebt = async (data: {
+    type: DebtType;
+    person_name: string;
+    amount: number;
+    due_date?: string;
+    description?: string;
+    wallet_id?: string;
+    updateWalletBalance?: boolean;
+  }) => {
+    const newDebt: Debt = {
+      id: `debt-${Date.now()}`,
+      type: data.type,
+      person_name: data.person_name,
+      amount: data.amount,
+      paid_amount: 0,
+      due_date: data.due_date,
+      description: data.description,
+      status: 'unpaid',
+      wallet_id: data.wallet_id,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    setDebts((prev) => [newDebt, ...prev]);
+
+    // Jika pengguna memilih untuk langsung mempengaruhi saldo dompet saat meminjam / meminjamkan
+    if (data.updateWalletBalance && data.wallet_id) {
+      if (data.type === 'payable') {
+        // Saya berutang / meminjam uang: dana masuk ke dompet saya (Pemasukan)
+        await addTransaction({
+          wallet_id: data.wallet_id,
+          type: 'income',
+          amount: data.amount,
+          category_name: 'Pinjaman Diterima',
+          description: `Penerimaan pinjaman dari ${data.person_name}`,
+          transaction_date: new Date().toISOString().split('T')[0],
+        });
+      } else {
+        // Piutang / saya meminjamkan uang ke orang lain: dana keluar dari dompet saya (Pengeluaran)
+        await addTransaction({
+          wallet_id: data.wallet_id,
+          type: 'expense',
+          amount: data.amount,
+          category_name: 'Pinjaman Diberikan',
+          description: `Meminjamkan uang kepada ${data.person_name}`,
+          transaction_date: new Date().toISOString().split('T')[0],
+        });
+      }
+    }
+
+    if (isSupabaseConfigured && supabase && user && !user.id.startsWith('usr-default-')) {
+      try {
+        await supabase.from('debts').insert({
+          user_id: user.id,
+          type: data.type,
+          person_name: data.person_name,
+          amount: data.amount,
+          paid_amount: 0,
+          due_date: data.due_date || null,
+          description: data.description || null,
+          status: 'unpaid',
+          wallet_id: data.wallet_id || null,
+        });
+      } catch (err) {
+        console.error('Gagal menyimpan data utang ke Supabase:', err);
+      }
+    }
+  };
+
+  // Update Utang / Piutang
+  const updateDebt = async (id: string, updates: Partial<Debt>) => {
+    setDebts((prev) =>
+      prev.map((d) => (d.id === id ? { ...d, ...updates, updated_at: new Date().toISOString() } : d))
+    );
+
+    if (isSupabaseConfigured && supabase && user && !user.id.startsWith('usr-default-')) {
+      try {
+        await supabase
+          .from('debts')
+          .update({
+            ...updates,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', id);
+      } catch (err) {
+        console.error('Gagal memperbarui data utang di Supabase:', err);
+      }
+    }
+  };
+
+  // Hapus Utang / Piutang
+  const deleteDebt = async (id: string) => {
+    setDebts((prev) => prev.filter((d) => d.id !== id));
+
+    if (isSupabaseConfigured && supabase && user && !user.id.startsWith('usr-default-')) {
+      try {
+        await supabase.from('debts').delete().eq('id', id);
+      } catch (err) {
+        console.error('Gagal menghapus data utang dari Supabase:', err);
+      }
+    }
+  };
+
+  // Catat Pembayaran / Pelunasan Utang
+  const recordDebtPayment = async (debtId: string, paymentAmount: number, walletId?: string) => {
+    const debt = debts.find((d) => d.id === debtId);
+    if (!debt || paymentAmount <= 0) return;
+
+    const newPaidAmount = Math.min(debt.amount, Number(debt.paid_amount) + paymentAmount);
+    const newStatus = newPaidAmount >= debt.amount ? 'paid' : 'partial';
+
+    await updateDebt(debtId, {
+      paid_amount: newPaidAmount,
+      status: newStatus,
+    });
+
+    // Catat mutasi kas dompet jika dompet dipilih
+    if (walletId) {
+      if (debt.type === 'payable') {
+        // Membayar utang saya: Pengeluaran dari dompet
+        await addTransaction({
+          wallet_id: walletId,
+          type: 'expense',
+          amount: paymentAmount,
+          category_name: 'Pembayaran Utang',
+          description: `Bayar cicilan/pelunasan utang ke ${debt.person_name}`,
+          transaction_date: new Date().toISOString().split('T')[0],
+        });
+      } else {
+        // Menerima pembayaran piutang: Pemasukan ke dompet
+        await addTransaction({
+          wallet_id: walletId,
+          type: 'income',
+          amount: paymentAmount,
+          category_name: 'Pelunasan Piutang',
+          description: `Terima pembayaran piutang dari ${debt.person_name}`,
+          transaction_date: new Date().toISOString().split('T')[0],
+        });
       }
     }
   };
@@ -484,12 +699,17 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
           setUser(newUser);
           saveStoredUser(newUser);
 
-          // Muat ulang dompet pengguna
           const { data: dbWallets } = await supabase
             .from('wallets')
             .select('*')
             .eq('user_id', data.user.id);
           if (dbWallets) setWallets(dbWallets);
+
+          const { data: dbDebts } = await supabase
+            .from('debts')
+            .select('*')
+            .eq('user_id', data.user.id);
+          if (dbDebts) setDebts(dbDebts);
 
           return { success: true };
         }
@@ -498,7 +718,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    // Login mode demo lokal
     const localUser: UserProfile = {
       id: `usr-${Date.now()}`,
       username: identifier.replace(/@.*/, ''),
@@ -551,7 +770,6 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    // Registrasi mode lokal
     const localUser: UserProfile = {
       id: `usr-${Date.now()}`,
       username: username.trim(),
@@ -581,6 +799,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
       value={{
         wallets,
         transactions,
+        debts,
         user,
         theme,
         isLoading,
@@ -593,16 +812,28 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
         deleteWallet,
         addTransaction,
         deleteTransaction,
+        addDebt,
+        updateDebt,
+        deleteDebt,
+        recordDebtPayment,
         login,
         register,
         logout,
         totalBalance,
         totalIncomeThisMonth,
         totalExpenseThisMonth,
+        totalPayable,
+        totalReceivable,
         isAddTxOpen,
         setIsAddTxOpen,
         isAddWalletOpen,
         setIsAddWalletOpen,
+        isAddDebtOpen,
+        setIsAddDebtOpen,
+        isDebtPaymentOpen,
+        setIsDebtPaymentOpen,
+        selectedDebtForPayment,
+        setSelectedDebtForPayment,
         isScannerOpen,
         setIsScannerOpen,
         isAuthOpen,
@@ -611,6 +842,8 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
         setIsSupabaseModalOpen,
         editingWallet,
         setEditingWallet,
+        editingDebt,
+        setEditingDebt,
       }}
     >
       {children}

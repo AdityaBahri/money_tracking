@@ -59,17 +59,38 @@ CREATE TABLE IF NOT EXISTS public.transactions (
   created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- 5. DEBTS TABLE (Utang & Piutang)
+-- 'payable': Utang saya (saya berutang kepada orang lain)
+-- 'receivable': Piutang (orang lain berutang kepada saya)
+CREATE TABLE IF NOT EXISTS public.debts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  type TEXT NOT NULL CHECK (type IN ('payable', 'receivable')),
+  person_name TEXT NOT NULL,
+  amount NUMERIC(15, 2) NOT NULL CHECK (amount > 0),
+  paid_amount NUMERIC(15, 2) NOT NULL DEFAULT 0 CHECK (paid_amount >= 0),
+  due_date DATE,
+  description TEXT,
+  status TEXT NOT NULL DEFAULT 'unpaid' CHECK (status IN ('unpaid', 'partial', 'paid')),
+  wallet_id UUID REFERENCES public.wallets(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- Indexes for optimal querying
 CREATE INDEX IF NOT EXISTS idx_wallets_user_id ON public.wallets(user_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON public.transactions(user_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_wallet_id ON public.transactions(wallet_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_date ON public.transactions(transaction_date DESC);
+CREATE INDEX IF NOT EXISTS idx_debts_user_id ON public.debts(user_id);
+CREATE INDEX IF NOT EXISTS idx_debts_due_date ON public.debts(due_date);
 
 -- Enable Row Level Security (RLS)
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.wallets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.debts ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for PROFILES
 CREATE POLICY "Users can view own profile"
@@ -135,6 +156,23 @@ CREATE POLICY "Users can delete own transactions"
   ON public.transactions FOR DELETE
   USING (auth.uid() = user_id);
 
+-- RLS Policies for DEBTS
+CREATE POLICY "Users can view own debts"
+  ON public.debts FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own debts"
+  ON public.debts FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own debts"
+  ON public.debts FOR UPDATE
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own debts"
+  ON public.debts FOR DELETE
+  USING (auth.uid() = user_id);
+
 -- Storage bucket for receipt images (if using Supabase Storage)
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('receipts', 'receipts', true)
@@ -175,3 +213,4 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
