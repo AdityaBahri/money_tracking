@@ -10,8 +10,17 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'SakuRapi - Pelacak Keuangan Pribadi',
+  title: 'SakuRapi: Pelacak Keuangan Pribadi',
   description: 'Aplikasi pencatatan keuangan pribadi dengan pelacakan saldo multi-dompet, scan struk belanja, dan riwayat transaksi.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon.png', sizes: '1024x1024', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '1024x1024', type: 'image/png' },
+    ],
+  },
 };
 
 export default function RootLayout({

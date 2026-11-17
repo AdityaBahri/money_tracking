@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useFinance } from '@/context/FinanceContext';
 import {
-  WalletCards,
   User,
   Lock,
   Mail,
-  ShieldCheck,
   AlertCircle,
   Sun,
   Moon,
@@ -69,8 +68,15 @@ export function AuthPage() {
       {/* Top Bar with Brand & Theme Toggle */}
       <header className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-sm">
-            <WalletCards className="w-5 h-5" aria-hidden="true" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden shadow-xs flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Logo SakuRapi"
+              width={36}
+              height={36}
+              className="w-full h-full object-cover"
+              priority
+            />
           </div>
           <span className="font-bold text-lg tracking-tight text-slate-900 dark:text-white">
             SakuRapi
@@ -97,8 +103,15 @@ export function AuthPage() {
         <div className="w-full max-w-md bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-6 sm:p-8">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 mb-3">
-              <ShieldCheck className="w-6 h-6" aria-hidden="true" />
+            <div className="relative inline-flex items-center justify-center w-14 h-14 rounded-2xl overflow-hidden shadow-sm mb-3">
+              <Image
+                src="/logo.png"
+                alt="Logo SakuRapi"
+                width={56}
+                height={56}
+                className="w-full h-full object-cover"
+                priority
+              />
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
               {mode === 'register' ? 'Mulai Kelola Keuangan Anda' : 'Selamat Datang Kembali'}

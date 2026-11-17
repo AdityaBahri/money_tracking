@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useFinance } from '@/context/FinanceContext';
 import { X, User, Lock, Mail, ShieldAlert, CheckCircle2 } from 'lucide-react';
 
@@ -83,15 +84,26 @@ export function AuthModal() {
       <div className="w-full max-w-md bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden my-8">
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
-          <div>
-            <h2 id="auth-modal-title" className="text-base font-bold text-slate-900 dark:text-white">
-              {mode === 'login' ? 'Masuk ke SakuRapi' : 'Daftar Akun Pengguna'}
-            </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              {isSupabase
-                ? 'Terhubung dengan database Supabase Auth'
-                : 'Mode mandiri akun tunggal (Penyimpanan Aman)'}
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden shrink-0 shadow-xs border border-slate-100 dark:border-slate-800">
+              <Image
+                src="/logo.png"
+                alt="Logo SakuRapi"
+                width={36}
+                height={36}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <h2 id="auth-modal-title" className="text-base font-bold text-slate-900 dark:text-white">
+                {mode === 'login' ? 'Masuk ke SakuRapi' : 'Daftar Akun Pengguna'}
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                {isSupabase
+                  ? 'Terhubung dengan database Supabase Auth'
+                  : 'Mode mandiri akun tunggal (Penyimpanan Aman)'}
+              </p>
+            </div>
           </div>
           <button
             type="button"

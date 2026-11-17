@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useFinance } from '@/context/FinanceContext';
 import {
-  WalletCards,
   Sun,
   Moon,
   User,
@@ -27,8 +27,15 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo & Name */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-sm">
-            <WalletCards className="w-5 h-5" aria-hidden="true" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden shadow-xs flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Logo SakuRapi"
+              width={36}
+              height={36}
+              className="w-full h-full object-cover"
+              priority
+            />
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -40,7 +47,7 @@ export function Navbar() {
               </span>
             </div>
             <p className="hidden md:block text-xs text-slate-500 dark:text-slate-400">
-              Pelacak Saldo Multi-Dompet & Scan Struk
+              Pelacak Saldo Multi-Dompet &amp; Scan Struk
             </p>
           </div>
         </div>
