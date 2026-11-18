@@ -7,77 +7,78 @@ import { LayoutDashboard, Wallet, ReceiptText, HandCoins, Plus } from 'lucide-re
 export function BottomNav() {
   const { activeTab, setActiveTab, setIsAddTxOpen } = useFinance();
 
+  const navItems = [
+    {
+      id: 'dashboard' as const,
+      label: 'Beranda',
+      icon: LayoutDashboard,
+    },
+    {
+      id: 'wallets' as const,
+      label: 'Dompet',
+      icon: Wallet,
+    },
+    {
+      id: 'transactions' as const,
+      label: 'Riwayat',
+      icon: ReceiptText,
+    },
+    {
+      id: 'debts' as const,
+      label: 'Utang',
+      icon: HandCoins,
+    },
+  ];
+
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#131B2A]/95 border-t border-slate-200 dark:border-slate-800 backdrop-blur-md pb-safe"
+      className="md:hidden fixed inset-x-3 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-[440px] z-40 pointer-events-none transition-all"
       aria-label="Navigasi Bawah Mobile"
+      style={{
+        bottom: 'max(0.75rem, env(safe-area-inset-bottom, 0.75rem))',
+      }}
     >
-      <div className="flex items-center justify-around h-16 px-2">
-        <button
-          type="button"
-          onClick={() => setActiveTab('dashboard')}
-          className={`tap-target flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
-            activeTab === 'dashboard'
-              ? 'text-blue-600 dark:text-blue-400 font-semibold'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-          }`}
-          aria-current={activeTab === 'dashboard' ? 'page' : undefined}
-        >
-          <LayoutDashboard className="w-5 h-5 mb-0.5" aria-hidden="true" />
-          <span className="text-[11px]">Beranda</span>
-        </button>
+      <div className="liquid-glass-bar rounded-full p-1.5 flex items-center justify-between gap-1 pointer-events-auto">
+        {/* Navigation Tabs */}
+        <div className="flex items-center flex-1 justify-around gap-1 min-w-0" role="tablist">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
 
-        <button
-          type="button"
-          onClick={() => setActiveTab('wallets')}
-          className={`tap-target flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
-            activeTab === 'wallets'
-              ? 'text-blue-600 dark:text-blue-400 font-semibold'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-          }`}
-          aria-current={activeTab === 'wallets' ? 'page' : undefined}
-        >
-          <Wallet className="w-5 h-5 mb-0.5" aria-hidden="true" />
-          <span className="text-[11px]">Dompet</span>
-        </button>
-
-        <div className="flex-1 flex justify-center -mt-4">
-          <button
-            type="button"
-            onClick={() => setIsAddTxOpen(true)}
-            className="w-11 h-11 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center border border-blue-500/20 active:scale-95 transition-transform"
-            aria-label="Tambah transaksi baru"
-          >
-            <Plus className="w-5 h-5 stroke-[2.5]" aria-hidden="true" />
-          </button>
+            return (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                aria-current={isActive ? 'page' : undefined}
+                onClick={() => setActiveTab(item.id)}
+                className={`tap-target flex-1 min-w-0 py-1.5 px-1 rounded-full flex flex-col items-center justify-center transition-all duration-200 group ${
+                  isActive
+                    ? 'liquid-glass-pill-active text-blue-600 dark:text-blue-400 font-semibold'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                }`}
+              >
+                <Icon className="w-5 h-5 mb-0.5 shrink-0 transition-transform group-active:scale-95" aria-hidden="true" />
+                <span className="text-[10px] truncate max-w-full leading-none">
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        <button
-          type="button"
-          onClick={() => setActiveTab('debts')}
-          className={`tap-target flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
-            activeTab === 'debts'
-              ? 'text-blue-600 dark:text-blue-400 font-semibold'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-          }`}
-          aria-current={activeTab === 'debts' ? 'page' : undefined}
-        >
-          <HandCoins className="w-5 h-5 mb-0.5" aria-hidden="true" />
-          <span className="text-[11px]">Utang</span>
-        </button>
+        {/* Vertical Specular Glass Divider */}
+        <div className="w-px h-6 bg-slate-300/50 dark:bg-white/15 my-auto shrink-0" aria-hidden="true" />
 
+        {/* Plus (+) Action Button at the far right */}
         <button
           type="button"
-          onClick={() => setActiveTab('transactions')}
-          className={`tap-target flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
-            activeTab === 'transactions'
-              ? 'text-blue-600 dark:text-blue-400 font-semibold'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-          }`}
-          aria-current={activeTab === 'transactions' ? 'page' : undefined}
+          onClick={() => setIsAddTxOpen(true)}
+          className="tap-target w-11 h-11 rounded-full bg-blue-600 hover:bg-blue-500 active:scale-90 text-white flex items-center justify-center shrink-0 shadow-[0_4px_14px_rgba(37,99,235,0.4),inset_0_1px_1px_rgba(255,255,255,0.35)] border border-blue-400/30 transition-transform ml-0.5"
+          aria-label="Catat transaksi baru"
         >
-          <ReceiptText className="w-5 h-5 mb-0.5" aria-hidden="true" />
-          <span className="text-[11px]">Riwayat</span>
+          <Plus className="w-5 h-5 stroke-[2.5]" aria-hidden="true" />
         </button>
       </div>
     </nav>
