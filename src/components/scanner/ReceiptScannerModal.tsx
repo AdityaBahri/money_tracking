@@ -81,26 +81,26 @@ export function ReceiptScannerModal() {
   if (wallets.length === 0) {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 dark:bg-black/60 backdrop-blur-md"
         role="dialog"
         aria-modal="true"
         aria-labelledby="no-wallet-scanner-title"
       >
-        <div className="w-full max-w-md bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center shadow-xl">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center mb-3">
+        <div className="w-full max-w-md bg-white dark:bg-[#1C1C1E] border border-black/[0.06] dark:border-white/[0.08] rounded-3xl p-6 text-center shadow-2xl">
+          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center mb-3">
             <ScanLine className="w-6 h-6" aria-hidden="true" />
           </div>
           <h2 id="no-wallet-scanner-title" className="text-base font-bold text-slate-900 dark:text-white">
             Belum Ada Dompet
           </h2>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 mb-6 leading-relaxed">
+          <p className="text-xs text-[#6C6C70] dark:text-[#8E8E93] mt-1 mb-6 leading-relaxed">
             Tambahkan dompet terlebih dahulu agar nominal belanja pada struk dapat langsung dipotongkan dari saldo dompet Anda.
           </p>
           <div className="flex items-center justify-center gap-3">
             <button
               type="button"
               onClick={handleClose}
-              className="tap-target px-4 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+              className="apple-button tap-target px-4 py-2 text-xs font-semibold rounded-2xl border border-black/[0.08] dark:border-white/[0.1] text-slate-700 dark:text-slate-300 hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] transition-colors"
             >
               Tutup
             </button>
@@ -110,7 +110,7 @@ export function ReceiptScannerModal() {
                 handleClose();
                 setIsAddWalletOpen(true);
               }}
-              className="tap-target px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors"
+              className="apple-button tap-target px-4 py-2 text-xs font-semibold rounded-2xl bg-[#007AFF] hover:bg-[#0071E3] dark:bg-[#0A84FF] text-white transition-colors shadow-xs"
             >
               Tambah Dompet Baru
             </button>
@@ -273,27 +273,27 @@ export function ReceiptScannerModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 dark:bg-black/60 backdrop-blur-md overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="scanner-modal-title"
     >
-      <div className="w-full max-w-xl bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden my-8">
+      <div className="w-full max-w-xl bg-white dark:bg-[#1C1C1E] border border-black/[0.06] dark:border-white/[0.08] rounded-3xl shadow-2xl overflow-hidden my-8">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between p-5 border-b border-black/[0.05] dark:border-white/[0.08]">
           <div>
             <h2 id="scanner-modal-title" className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <ScanLine className="w-5 h-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+              <ScanLine className="w-5 h-5 text-[#007AFF] dark:text-[#0A84FF]" aria-hidden="true" />
               <span>Pindai Struk Belanja (OCR)</span>
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-[#6C6C70] dark:text-[#8E8E93] mt-0.5">
               Ambil foto atau unggah struk belanja untuk deteksi nominal otomatis
             </p>
           </div>
           <button
             type="button"
             onClick={handleClose}
-            className="tap-target p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="apple-button tap-target p-2 rounded-2xl text-[#8E8E93] hover:text-slate-900 dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] transition-colors"
             aria-label="Tutup dialog"
           >
             <X className="w-5 h-5" aria-hidden="true" />
@@ -335,15 +335,15 @@ export function ReceiptScannerModal() {
                 <button
                   type="button"
                   onClick={() => cameraInputRef.current?.click()}
-                  className="tap-target p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:border-blue-500 flex flex-col items-center justify-center text-center transition-colors group"
+                  className="apple-button tap-target p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-black/[0.03] dark:bg-[#2C2C2E]/60 hover:bg-[#007AFF]/10 hover:border-[#007AFF] flex flex-col items-center justify-center text-center transition-all group"
                 >
-                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+                  <div className="w-12 h-12 rounded-2xl bg-[#007AFF]/15 text-[#007AFF] dark:text-[#0A84FF] flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
                     <Camera className="w-6 h-6" aria-hidden="true" />
                   </div>
                   <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                     Buka Kamera Ponsel
                   </span>
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  <span className="text-[11px] text-[#6C6C70] dark:text-[#8E8E93] mt-0.5">
                     Foto struk fisik langsung
                   </span>
                 </button>
@@ -352,15 +352,15 @@ export function ReceiptScannerModal() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="tap-target p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:border-blue-500 flex flex-col items-center justify-center text-center transition-colors group"
+                  className="apple-button tap-target p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-black/[0.03] dark:bg-[#2C2C2E]/60 hover:bg-[#007AFF]/10 hover:border-[#007AFF] flex flex-col items-center justify-center text-center transition-all group"
                 >
-                  <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+                  <div className="w-12 h-12 rounded-2xl bg-black/[0.06] dark:bg-white/[0.08] text-slate-700 dark:text-slate-300 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
                     <Upload className="w-6 h-6" aria-hidden="true" />
                   </div>
                   <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                     Unggah Gambar Struk
                   </span>
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  <span className="text-[11px] text-[#6C6C70] dark:text-[#8E8E93] mt-0.5">
                     Pilih file PNG atau JPG
                   </span>
                 </button>
@@ -371,7 +371,7 @@ export function ReceiptScannerModal() {
                 <button
                   type="button"
                   onClick={handleUseSampleReceipt}
-                  className="tap-target text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1.5"
+                  className="apple-button tap-target text-xs font-semibold text-[#007AFF] dark:text-[#0A84FF] hover:underline inline-flex items-center gap-1.5 py-1 px-3 rounded-xl"
                 >
                   <FileImage className="w-4 h-4" aria-hidden="true" />
                   <span>Coba dengan Contoh Struk Indomaret</span>
@@ -382,17 +382,17 @@ export function ReceiptScannerModal() {
 
           {/* Progress Bar Scanning */}
           {isScanning && (
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+            <div className="p-4 rounded-2xl bg-[#F2F2F7] dark:bg-[#2C2C2E]/60 border border-black/[0.04] dark:border-white/[0.06]">
               <div className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 <span className="flex items-center gap-2">
-                  <RefreshCw className="w-4 h-4 text-blue-600 animate-spin" aria-hidden="true" />
+                  <RefreshCw className="w-4 h-4 text-[#007AFF] animate-spin" aria-hidden="true" />
                   <span>{scanStatus || 'Memproses OCR...'}</span>
                 </span>
                 <span>{scanProgress}%</span>
               </div>
-              <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+              <div className="w-full h-2 rounded-full bg-black/[0.06] dark:bg-black/40 overflow-hidden">
                 <div
-                  className="h-full bg-blue-600 transition-all duration-300 rounded-full"
+                  className="h-full bg-[#007AFF] transition-all duration-300 rounded-full"
                   style={{ width: `${scanProgress}%` }}
                 />
               </div>
@@ -403,14 +403,14 @@ export function ReceiptScannerModal() {
           {hasScanned && (
             <form onSubmit={handleSaveTransaction} className="space-y-4">
               {errorMsg && (
-                <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/70 text-amber-800 dark:text-amber-200 text-xs flex items-center gap-2">
+                <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-200 text-xs flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                   <span>{errorMsg}</span>
                 </div>
               )}
 
               {/* Preview Thumbnail Struk & Ganti Foto */}
-              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#F2F2F7] dark:bg-[#2C2C2E]/50 border border-black/[0.04] dark:border-white/[0.06]">
                 <div className="flex items-center gap-3">
                   {imagePreview && (
                     /* eslint-disable-next-line @next/next/no-img-element */
@@ -419,15 +419,15 @@ export function ReceiptScannerModal() {
                       alt="Pratinjau struk belanja"
                       width={56}
                       height={56}
-                      className="w-14 h-14 object-cover rounded-lg border border-slate-300 dark:border-slate-600"
+                      className="w-14 h-14 object-cover rounded-xl border border-black/10 dark:border-white/10"
                     />
                   )}
                   <div>
                     <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+                      <CheckCircle2 className="w-4 h-4 text-[#007AFF] dark:text-[#0A84FF]" aria-hidden="true" />
                       <span>Struk Berhasil Dianalisis</span>
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-slate-400 block mt-0.5">
+                    <span className="text-[11px] text-[#6C6C70] dark:text-[#8E8E93] block mt-0.5">
                       Periksa data dan pilih dompet pembayaran
                     </span>
                   </div>
@@ -435,7 +435,7 @@ export function ReceiptScannerModal() {
                 <button
                   type="button"
                   onClick={resetState}
-                  className="tap-target px-2.5 py-1 text-xs font-semibold rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  className="apple-button tap-target px-3 py-1.5 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-black/[0.04] dark:hover:bg-[#3A3A3C] transition-colors"
                 >
                   Ulangi
                 </button>
@@ -452,7 +452,7 @@ export function ReceiptScannerModal() {
                   </span>
                 </div>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-[#8E8E93]">
                     Rp
                   </span>
                   <input
@@ -463,7 +463,7 @@ export function ReceiptScannerModal() {
                     placeholder="0"
                     value={totalInput}
                     onChange={(e) => setTotalInput(e.target.value)}
-                    className="w-full pl-10 pr-3 py-2 text-base font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-base font-bold rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] font-mono"
                   />
                 </div>
               </div>
@@ -481,7 +481,7 @@ export function ReceiptScannerModal() {
                     placeholder="Contoh: Indomaret, Superindo"
                     value={merchant}
                     onChange={(e) => setMerchant(e.target.value)}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   />
                 </div>
                 <div>
@@ -494,7 +494,7 @@ export function ReceiptScannerModal() {
                     required
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   />
                 </div>
               </div>
@@ -509,7 +509,7 @@ export function ReceiptScannerModal() {
                     id="scan-wallet"
                     value={walletId}
                     onChange={(e) => setSelectedWalletId(e.target.value)}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   >
                     {wallets.map((w) => (
                       <option key={w.id} value={w.id}>
@@ -526,7 +526,7 @@ export function ReceiptScannerModal() {
                     id="scan-cat"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   >
                     {EXPENSE_CATEGORIES.map((c) => (
                       <option key={c} value={c}>
@@ -543,12 +543,12 @@ export function ReceiptScannerModal() {
                   <button
                     type="button"
                     onClick={() => setShowRawText(!showRawText)}
-                    className="tap-target text-[11px] font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 underline"
+                    className="tap-target text-[11px] font-medium text-[#6C6C70] hover:text-slate-900 dark:text-[#8E8E93] dark:hover:text-white underline"
                   >
                     {showRawText ? 'Sembunyikan Hasil Teks Mentah OCR' : 'Lihat Teks Mentah OCR'}
                   </button>
                   {showRawText && (
-                    <pre className="mt-2 p-3 text-[10px] font-mono rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 overflow-x-auto max-h-32 border border-slate-200 dark:border-slate-800">
+                    <pre className="mt-2 p-3 text-[10px] font-mono rounded-xl bg-black/[0.03] dark:bg-[#2C2C2E]/80 text-slate-700 dark:text-slate-300 overflow-x-auto max-h-32 border border-black/[0.06] dark:border-white/[0.08]">
                       {rawText}
                     </pre>
                   )}
@@ -556,18 +556,18 @@ export function ReceiptScannerModal() {
               )}
 
               {/* Submit Button */}
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-black/[0.05] dark:border-white/[0.08]">
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="tap-target px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                  className="apple-button tap-target px-4 py-2 text-xs font-semibold text-[#6C6C70] dark:text-[#8E8E93] hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] rounded-2xl transition-colors"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={numericTotal <= 0 || !walletId}
-                  className="tap-target px-5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50"
+                  className="apple-button tap-target px-5 py-2.5 text-xs font-semibold text-white bg-[#007AFF] hover:bg-[#0071E3] dark:bg-[#0A84FF] rounded-2xl transition-all disabled:opacity-50 shadow-xs"
                 >
                   Simpan Pengeluaran dari Struk
                 </button>

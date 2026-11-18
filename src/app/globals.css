@@ -4,29 +4,31 @@
 
 @layer base {
   :root {
-    --background: #f8fafc;
+    --background: #f2f2f7;
     --surface: #ffffff;
-    --border: #e2e8f0;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --brand: #0066ff;
-    --brand-hover: #0052cc;
+    --surface-secondary: #f2f2f7;
+    --border: rgba(60, 60, 67, 0.12);
+    --text-primary: #000000;
+    --text-secondary: #6c6c70;
+    --brand: #007aff;
+    --brand-hover: #0062cc;
     --brand-light: #eff6ff;
-    --expense: #e11d48;
-    --expense-light: #fff1f2;
+    --expense: #ff3b30;
+    --expense-light: #fff1f0;
   }
 
   html.dark {
-    --background: #0b0f17;
-    --surface: #131b2a;
-    --border: #23324a;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --brand: #3b82f6;
-    --brand-hover: #2563eb;
-    --brand-light: #172554;
-    --expense: #f43f5e;
-    --expense-light: #4c0519;
+    --background: #000000;
+    --surface: #1c1c1e;
+    --surface-secondary: #2c2c2e;
+    --border: rgba(255, 255, 255, 0.08);
+    --text-primary: #ffffff;
+    --text-secondary: #8e8e93;
+    --brand: #0a84ff;
+    --brand-hover: #007aff;
+    --brand-light: rgba(10, 132, 255, 0.15);
+    --expense: #ff453a;
+    --expense-light: rgba(255, 69, 58, 0.15);
   }
 
   body {
@@ -60,7 +62,7 @@
 
   /* R-32: Aksesibilitas keyboard dan focus ring yang jelas */
   :focus-visible {
-    outline: 2px solid #2563eb;
+    outline: 2px solid #007aff;
     outline-offset: 2px;
   }
 }
@@ -72,6 +74,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Apple Squircle / Tactile Button Interaction */
+.apple-button {
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), opacity 0.15s ease, background-color 0.15s ease;
+}
+.apple-button:active {
+  transform: scale(0.97);
+  opacity: 0.92;
 }
 
 /* Apple Liquid Glass Style */

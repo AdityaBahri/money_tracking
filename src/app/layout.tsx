@@ -37,7 +37,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased bg-slate-50 dark:bg-[#0B0F17] text-slate-900 dark:text-slate-100 min-h-full" suppressHydrationWarning>
+      <body className="font-sans antialiased bg-[#F2F2F7] dark:bg-black text-slate-900 dark:text-white min-h-full" suppressHydrationWarning>
         <FinanceProvider>
           {children}
         </FinanceProvider>

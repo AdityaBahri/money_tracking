@@ -85,26 +85,26 @@ export function WalletModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 dark:bg-black/60 backdrop-blur-md overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="wallet-modal-title"
     >
-      <div className="w-full max-w-md bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden my-8">
+      <div className="w-full max-w-md bg-white dark:bg-[#1C1C1E] border border-black/[0.06] dark:border-white/[0.08] rounded-3xl shadow-2xl overflow-hidden my-8">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between p-5 border-b border-black/[0.05] dark:border-white/[0.08]">
           <div>
             <h2 id="wallet-modal-title" className="text-base font-bold text-slate-900 dark:text-white">
               {editingWallet ? 'Edit Dompet' : 'Tambah Dompet Baru'}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-[#6C6C70] dark:text-[#8E8E93] mt-0.5">
               Hubungkan rekening bank, e-wallet, atau pos uang tunai
             </p>
           </div>
           <button
             type="button"
             onClick={handleClose}
-            className="tap-target p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="apple-button tap-target p-2 rounded-2xl text-[#8E8E93] hover:text-slate-900 dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] transition-colors"
             aria-label="Tutup modal"
           >
             <X className="w-5 h-5" aria-hidden="true" />
@@ -125,7 +125,7 @@ export function WalletModal() {
                     key={p.name}
                     type="button"
                     onClick={() => handlePresetSelect(p)}
-                    className="tap-target px-2.5 py-1 text-[11px] font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:border-blue-500 text-slate-700 dark:text-slate-300 transition-colors"
+                    className="apple-button tap-target px-3 py-1 text-[11px] font-medium rounded-full border border-black/[0.08] dark:border-white/[0.1] bg-black/[0.03] dark:bg-[#2C2C2E] hover:bg-[#007AFF]/10 hover:border-[#007AFF] text-slate-700 dark:text-slate-300 transition-colors"
                   >
                     {p.name}
                   </button>
@@ -146,7 +146,7 @@ export function WalletModal() {
               placeholder="Contoh: BCA Utama, GoPay Harian"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
             />
           </div>
 
@@ -159,7 +159,7 @@ export function WalletModal() {
               id="wallet-type"
               value={type}
               onChange={(e) => setType(e.target.value as WalletType)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
             >
               <option value="bank">Rekening Bank</option>
               <option value="ewallet">E-Wallet / Dompet Digital</option>
@@ -175,12 +175,12 @@ export function WalletModal() {
               <label htmlFor="wallet-balance" className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
                 Saldo {editingWallet ? 'Saat Ini' : 'Awal'}
               </label>
-              <span className="text-xs font-bold text-blue-600 dark:text-blue-400">
+              <span className="text-xs font-bold text-[#007AFF] dark:text-[#0A84FF]">
                 {formatRupiah(numericValue)}
               </span>
             </div>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[#8E8E93]">
                 Rp
               </span>
               <input
@@ -191,7 +191,7 @@ export function WalletModal() {
                 placeholder="0"
                 value={balanceInput}
                 onChange={(e) => setBalanceInput(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] font-mono"
               />
             </div>
           </div>
@@ -207,23 +207,23 @@ export function WalletModal() {
               placeholder="Contoh: 1234567890 atau 0812345678"
               value={accountNumber}
               onChange={(e) => setAccountNumber(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+              className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] font-mono"
             />
           </div>
 
           {/* Buttons */}
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-black/[0.05] dark:border-white/[0.08]">
             <button
               type="button"
               onClick={handleClose}
-              className="tap-target px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+              className="apple-button tap-target px-4 py-2 text-xs font-semibold text-[#6C6C70] dark:text-[#8E8E93] hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] rounded-2xl transition-colors"
             >
               Batal
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !name.trim()}
-              className="tap-target px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 rounded-lg transition-colors disabled:opacity-50"
+              className="apple-button tap-target px-5 py-2 text-xs font-semibold text-white bg-[#007AFF] hover:bg-[#0071E3] dark:bg-[#0A84FF] rounded-2xl transition-all disabled:opacity-50 shadow-xs"
             >
               {isSubmitting ? 'Menyimpan...' : editingWallet ? 'Simpan Perubahan' : 'Tambah Dompet'}
             </button>

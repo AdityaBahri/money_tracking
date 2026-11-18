@@ -76,16 +76,16 @@ export function AuthModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 dark:bg-black/60 backdrop-blur-md overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="auth-modal-title"
     >
-      <div className="w-full max-w-md bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden my-8">
+      <div className="w-full max-w-md bg-white dark:bg-[#1C1C1E] border border-black/[0.06] dark:border-white/[0.08] rounded-3xl shadow-2xl overflow-hidden my-8">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between p-5 border-b border-black/[0.05] dark:border-white/[0.08]">
           <div className="flex items-center gap-3">
-            <div className="relative w-9 h-9 rounded-xl overflow-hidden shrink-0 shadow-xs border border-slate-100 dark:border-slate-800">
+            <div className="relative w-9 h-9 rounded-2xl overflow-hidden shrink-0 shadow-xs border border-black/[0.06] dark:border-white/[0.1]">
               <Image
                 src="/logo.png"
                 alt="Logo SakuRapi"
@@ -98,7 +98,7 @@ export function AuthModal() {
               <h2 id="auth-modal-title" className="text-base font-bold text-slate-900 dark:text-white">
                 {mode === 'login' ? 'Masuk ke SakuRapi' : 'Daftar Akun Pengguna'}
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-[#6C6C70] dark:text-[#8E8E93] mt-0.5">
                 {isSupabase
                   ? 'Terhubung dengan database Supabase Auth'
                   : 'Mode mandiri akun tunggal (Penyimpanan Aman)'}
@@ -108,7 +108,7 @@ export function AuthModal() {
           <button
             type="button"
             onClick={handleClose}
-            className="tap-target p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="apple-button tap-target p-2 rounded-2xl text-[#8E8E93] hover:text-slate-900 dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] transition-colors"
             aria-label="Tutup dialog"
           >
             <X className="w-5 h-5" aria-hidden="true" />
@@ -117,7 +117,7 @@ export function AuthModal() {
 
         {/* Mode Toggle */}
         <div className="p-5 pb-0">
-          <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-800" role="tablist">
+          <div className="grid grid-cols-2 gap-1 p-1 rounded-2xl bg-black/[0.06] dark:bg-[#2C2C2E]" role="tablist">
             <button
               type="button"
               role="tab"
@@ -126,10 +126,10 @@ export function AuthModal() {
                 setMode('login');
                 setErrorMessage('');
               }}
-              className={`tap-target py-2 text-xs font-semibold rounded-lg transition-colors ${
+              className={`apple-button tap-target py-2 text-xs font-semibold rounded-xl transition-all ${
                 mode === 'login'
-                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-white dark:bg-[#3A3A3C] text-slate-900 dark:text-white shadow-xs'
+                  : 'text-[#6C6C70] dark:text-[#8E8E93] hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               Masuk
@@ -142,10 +142,10 @@ export function AuthModal() {
                 setMode('register');
                 setErrorMessage('');
               }}
-              className={`tap-target py-2 text-xs font-semibold rounded-lg transition-colors ${
+              className={`apple-button tap-target py-2 text-xs font-semibold rounded-xl transition-all ${
                 mode === 'register'
-                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-white dark:bg-[#3A3A3C] text-slate-900 dark:text-white shadow-xs'
+                  : 'text-[#6C6C70] dark:text-[#8E8E93] hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               Daftar Baru
@@ -156,14 +156,14 @@ export function AuthModal() {
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           {errorMessage && (
-            <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
+            <div className="p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
               <span>{errorMessage}</span>
             </div>
           )}
 
           {successMessage && (
-            <div className="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs flex items-center gap-2">
+            <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
               <span>{successMessage}</span>
             </div>
@@ -177,7 +177,7 @@ export function AuthModal() {
                   Username atau Email
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" aria-hidden="true" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E93]" aria-hidden="true" />
                   <input
                     id="auth-identifier"
                     type="text"
@@ -185,7 +185,7 @@ export function AuthModal() {
                     placeholder="nama_pengguna atau email@domain.com"
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   />
                 </div>
               </div>
@@ -196,7 +196,7 @@ export function AuthModal() {
                   Kata Sandi
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" aria-hidden="true" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E93]" aria-hidden="true" />
                   <input
                     id="auth-password"
                     type="password"
@@ -204,7 +204,7 @@ export function AuthModal() {
                     placeholder="Masukkan kata sandi"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   />
                 </div>
               </div>
@@ -217,7 +217,7 @@ export function AuthModal() {
                   Username
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" aria-hidden="true" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E93]" aria-hidden="true" />
                   <input
                     id="reg-username"
                     type="text"
@@ -225,7 +225,7 @@ export function AuthModal() {
                     placeholder="nama_pengguna"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   />
                 </div>
               </div>
@@ -236,14 +236,14 @@ export function AuthModal() {
                   Alamat Email (Opsional jika memakai username)
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" aria-hidden="true" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E93]" aria-hidden="true" />
                   <input
                     id="reg-email"
                     type="email"
                     placeholder="email@domain.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   />
                 </div>
               </div>
@@ -259,7 +259,7 @@ export function AuthModal() {
                   placeholder="Contoh: Budi Santoso"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                 />
               </div>
 
@@ -269,7 +269,7 @@ export function AuthModal() {
                   Kata Sandi Baru
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" aria-hidden="true" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E93]" aria-hidden="true" />
                   <input
                     id="reg-password"
                     type="password"
@@ -277,7 +277,7 @@ export function AuthModal() {
                     placeholder="Minimal 6 karakter"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   />
                 </div>
               </div>
@@ -289,7 +289,7 @@ export function AuthModal() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="tap-target w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-50"
+              className="apple-button tap-target w-full py-3 px-4 rounded-2xl text-xs sm:text-sm font-bold text-white bg-[#007AFF] hover:bg-[#0071E3] dark:bg-[#0A84FF] transition-all disabled:opacity-50 shadow-xs"
             >
               {isSubmitting
                 ? 'Memproses...'

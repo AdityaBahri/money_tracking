@@ -33,7 +33,7 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0B0F17] text-slate-400" suppressHydrationWarning>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F2F2F7] dark:bg-black text-slate-400" suppressHydrationWarning>
         <Loader2 className="w-8 h-8 animate-spin text-blue-600 mb-3" aria-hidden="true" />
         <p className="text-sm font-medium">Memuat data...</p>
       </div>
@@ -46,7 +46,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0B0F17] transition-colors" suppressHydrationWarning>
+    <div className="min-h-screen flex flex-col bg-[#F2F2F7] dark:bg-black transition-colors" suppressHydrationWarning>
       {/* Top Navbar */}
       <Navbar />
 
@@ -108,20 +108,20 @@ export default function HomePage() {
               )}
 
               {activeTab === 'scanner' && (
-                <div className="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#131B2A] text-center max-w-lg mx-auto my-6">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 mx-auto flex items-center justify-center mb-3">
+                <div className="p-8 rounded-3xl border border-black/[0.04] dark:border-white/[0.08] bg-white dark:bg-[#1C1C1E] shadow-sm text-center max-w-lg mx-auto my-6">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 mx-auto flex items-center justify-center mb-3">
                     <Loader2 className="w-6 h-6" aria-hidden="true" />
                   </div>
                   <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
                     Pindai Struk Belanja
                   </h2>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">
+                  <p className="text-xs text-slate-500 dark:text-[#8E8E93] mb-5 leading-relaxed">
                     Ambil foto struk fisik atau unggah gambar nota belanja Anda untuk mencatat pengeluaran otomatis.
                   </p>
                   <button
                     type="button"
                     onClick={() => setIsScannerOpen(true)}
-                    className="tap-target px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors"
+                    className="apple-button tap-target px-5 py-3 rounded-2xl bg-[#007AFF] hover:bg-[#0071E3] dark:bg-[#0A84FF] text-white text-xs sm:text-sm font-semibold inline-flex items-center gap-2 shadow-xs transition-all"
                   >
                     <span>Buka Pemindai Struk</span>
                   </button>

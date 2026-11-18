@@ -81,23 +81,23 @@ export function DebtModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 dark:bg-black/60 backdrop-blur-md overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="debt-modal-title"
     >
-      <div className="w-full max-w-lg bg-white dark:bg-[#131B2A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden my-8">
+      <div className="w-full max-w-lg bg-white dark:bg-[#1C1C1E] border border-black/[0.06] dark:border-white/[0.08] rounded-3xl shadow-2xl overflow-hidden my-8">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between p-5 border-b border-black/[0.05] dark:border-white/[0.08]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-400 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
               <HandCoins className="w-5 h-5" aria-hidden="true" />
             </div>
             <div>
               <h2 id="debt-modal-title" className="text-base font-bold text-slate-900 dark:text-white">
                 {editingDebt ? 'Edit Catatan Utang / Piutang' : 'Catat Utang / Piutang Baru'}
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#6C6C70] dark:text-[#8E8E93]">
                 Kelola kewajiban utang atau piutang yang perlu ditagih
               </p>
             </div>
@@ -105,7 +105,7 @@ export function DebtModal() {
           <button
             type="button"
             onClick={handleClose}
-            className="tap-target p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="apple-button tap-target p-2 rounded-2xl text-[#8E8E93] hover:text-slate-900 dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] transition-colors"
             aria-label="Tutup dialog"
           >
             <X className="w-5 h-5" aria-hidden="true" />
@@ -114,16 +114,16 @@ export function DebtModal() {
 
         {/* Tipe Selector: Utang Saya vs Piutang */}
         <div className="p-5 pb-0">
-          <div className="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80" role="tablist">
+          <div className="grid grid-cols-2 gap-1 p-1 rounded-2xl bg-black/[0.05] dark:bg-[#2C2C2E]" role="tablist">
             <button
               type="button"
               role="tab"
               aria-selected={type === 'payable'}
               onClick={() => setType('payable')}
-              className={`tap-target py-2 px-3 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+              className={`apple-button tap-target py-2 px-3 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-all ${
                 type === 'payable'
-                  ? 'bg-rose-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-[#FF3B30] dark:bg-[#FF453A] text-white shadow-xs'
+                  : 'text-[#6C6C70] dark:text-[#8E8E93] hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <ArrowDownLeft className="w-4 h-4" aria-hidden="true" />
@@ -134,10 +134,10 @@ export function DebtModal() {
               role="tab"
               aria-selected={type === 'receivable'}
               onClick={() => setType('receivable')}
-              className={`tap-target py-2 px-3 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+              className={`apple-button tap-target py-2 px-3 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-all ${
                 type === 'receivable'
                   ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  : 'text-[#6C6C70] dark:text-[#8E8E93] hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
@@ -160,7 +160,7 @@ export function DebtModal() {
               placeholder="Contoh: Budi Santoso, Toko Sumber Makmur"
               value={personName}
               onChange={(e) => setPersonName(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
             />
           </div>
 
@@ -175,7 +175,7 @@ export function DebtModal() {
               </span>
             </div>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-[#8E8E93]">
                 Rp
               </span>
               <input
@@ -186,7 +186,7 @@ export function DebtModal() {
                 placeholder="0"
                 value={amountInput}
                 onChange={(e) => setAmountInput(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 text-base font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                className="w-full pl-10 pr-3.5 py-2.5 text-base font-bold rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] font-mono"
               />
             </div>
           </div>
@@ -201,11 +201,11 @@ export function DebtModal() {
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
             />
           </div>
 
-          {/* Catatan / Keterangan */}
+          {/* Catatan / Keperluan Pinjaman */}
           <div>
             <label htmlFor="debt-desc" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
               Catatan / Keperluan Pinjaman
@@ -216,19 +216,19 @@ export function DebtModal() {
               placeholder="Contoh: Talangan servis kendaraan, Belanja modal kerja"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
             />
           </div>
 
           {/* Opsi Sinkronisasi Saldo Dompet (hanya untuk penambahan baru) */}
           {!editingDebt && wallets.length > 0 && (
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2.5">
+            <div className="p-3.5 rounded-2xl bg-black/[0.03] dark:bg-[#2C2C2E]/50 border border-black/[0.05] dark:border-white/[0.08] space-y-2.5">
               <label className="flex items-start gap-2.5 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={updateWalletBalance}
                   onChange={(e) => setUpdateWalletBalance(e.target.checked)}
-                  className="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
+                  className="mt-0.5 rounded border-slate-300 text-[#007AFF] focus:ring-[#007AFF] w-4 h-4"
                 />
                 <span className="text-xs text-slate-700 dark:text-slate-300">
                   {type === 'payable'
@@ -239,14 +239,14 @@ export function DebtModal() {
 
               {updateWalletBalance && (
                 <div>
-                  <label htmlFor="debt-wallet" className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                  <label htmlFor="debt-wallet" className="block text-[11px] font-semibold text-[#6C6C70] dark:text-[#8E8E93] mb-1">
                     Pilih Dompet Rekening
                   </label>
                   <select
                     id="debt-wallet"
                     value={walletId}
                     onChange={(e) => setWalletId(e.target.value)}
-                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3.5 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#1C1C1E] text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF]"
                   >
                     {wallets.map((w) => (
                       <option key={w.id} value={w.id}>
@@ -260,18 +260,18 @@ export function DebtModal() {
           )}
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-black/[0.05] dark:border-white/[0.08]">
             <button
               type="button"
               onClick={handleClose}
-              className="tap-target px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+              className="apple-button tap-target px-4 py-2 text-xs font-semibold text-[#6C6C70] dark:text-[#8E8E93] hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] rounded-2xl transition-colors"
             >
               Batal
             </button>
             <button
               type="submit"
               disabled={isSubmitting || numericAmount <= 0 || !personName.trim()}
-              className="tap-target px-5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50"
+              className="apple-button tap-target px-5 py-2 text-xs font-semibold text-white bg-[#007AFF] hover:bg-[#0071E3] dark:bg-[#0A84FF] rounded-2xl transition-all disabled:opacity-50 shadow-xs"
             >
               {isSubmitting ? 'Menyimpan...' : editingDebt ? 'Simpan Perubahan' : 'Catat Pinjaman'}
             </button>
