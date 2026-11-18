@@ -33,7 +33,7 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0B0F17] text-slate-400">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0B0F17] text-slate-400" suppressHydrationWarning>
         <Loader2 className="w-8 h-8 animate-spin text-blue-600 mb-3" aria-hidden="true" />
         <p className="text-sm font-medium">Memuat data...</p>
       </div>
@@ -46,7 +46,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0B0F17] transition-colors">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0B0F17] transition-colors" suppressHydrationWarning>
       {/* Top Navbar */}
       <Navbar />
 
