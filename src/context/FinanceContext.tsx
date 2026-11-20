@@ -21,6 +21,7 @@ import {
   saveStoredUser,
 } from '@/lib/storage';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { getDeviceLocalDate } from '@/lib/formatters';
 
 interface FinanceContextType {
   wallets: Wallet[];
@@ -182,7 +183,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
               .order('created_at', { ascending: true });
 
             if (dbWallets && isMounted) {
-              setWallets(dbWallets);
+              setWallets(dbWallets.map((w) => ({ ...w, balance: Number(w.balance) || 0 })));
             }
 
             const { data: dbTx } = await supabase
@@ -192,7 +193,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
               .order('transaction_date', { ascending: false });
 
             if (dbTx && isMounted) {
-              setTransactions(dbTx);
+              setTransactions(dbTx.map((t) => ({ ...t, amount: Number(t.amount) || 0 })));
             }
 
             const { data: dbDebts } = await supabase
@@ -202,7 +203,13 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
               .order('created_at', { ascending: false });
 
             if (dbDebts && isMounted) {
-              setDebts(dbDebts);
+              setDebts(
+                dbDebts.map((d) => ({
+                  ...d,
+                  amount: Number(d.amount) || 0,
+                  paid_amount: Number(d.paid_amount) || 0,
+                }))
+              );
             }
           } else {
             loadLocal();
@@ -226,9 +233,15 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
       const storedDebts = loadStoredDebts();
       const storedUser = loadStoredUser();
       if (isMounted) {
-        setWallets(storedWallets);
-        setTransactions(storedTx);
-        setDebts(storedDebts);
+        setWallets(storedWallets.map((w) => ({ ...w, balance: Number(w.balance) || 0 })));
+        setTransactions(storedTx.map((t) => ({ ...t, amount: Number(t.amount) || 0 })));
+        setDebts(
+          storedDebts.map((d) => ({
+            ...d,
+            amount: Number(d.amount) || 0,
+            paid_amount: Number(d.paid_amount) || 0,
+          }))
+        );
         setUser(storedUser);
       }
     }
@@ -412,35 +425,39 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     receipt_url?: string;
     receipt_data?: { merchant?: string; raw_text?: string };
   }) => {
+    const txAmount = Math.max(0, Number(data.amount) || 0);
+    if (txAmount <= 0) return;
+
+    const tempId = `tx-${Date.now()}`;
     const newTx: Transaction = {
-      id: `tx-${Date.now()}`,
+      id: tempId,
       wallet_id: data.wallet_id,
       type: data.type,
-      amount: data.amount,
+      amount: txAmount,
       category_name: data.category_name,
       description: data.description,
-      transaction_date: data.transaction_date,
+      transaction_date: data.transaction_date || getDeviceLocalDate(),
       target_wallet_id: data.target_wallet_id,
       receipt_url: data.receipt_url,
       receipt_data: data.receipt_data,
       created_at: new Date().toISOString(),
     };
 
-    // Update saldo dompet lokal
+    // Update saldo dompet lokal secara instan
     setWallets((prev) =>
       prev.map((w) => {
         if (data.type === 'expense' && w.id === data.wallet_id) {
-          return { ...w, balance: Number(w.balance) - data.amount };
+          return { ...w, balance: (Number(w.balance) || 0) - txAmount };
         }
         if (data.type === 'income' && w.id === data.wallet_id) {
-          return { ...w, balance: Number(w.balance) + data.amount };
+          return { ...w, balance: (Number(w.balance) || 0) + txAmount };
         }
         if (data.type === 'transfer') {
           if (w.id === data.wallet_id) {
-            return { ...w, balance: Number(w.balance) - data.amount };
+            return { ...w, balance: (Number(w.balance) || 0) - txAmount };
           }
           if (w.id === data.target_wallet_id) {
-            return { ...w, balance: Number(w.balance) + data.amount };
+            return { ...w, balance: (Number(w.balance) || 0) + txAmount };
           }
         }
         return w;
@@ -451,27 +468,52 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
 
     if (isSupabaseConfigured && supabase && user && !user.id.startsWith('usr-default-')) {
       try {
-        await supabase.from('transactions').insert({
-          user_id: user.id,
-          wallet_id: data.wallet_id,
-          type: data.type,
-          amount: data.amount,
-          category_name: data.category_name,
-          description: data.description,
-          transaction_date: data.transaction_date,
-          target_wallet_id: data.target_wallet_id,
-          receipt_url: data.receipt_url,
-          receipt_data: data.receipt_data,
-        });
+        const { data: insertedTx, error: txError } = await supabase
+          .from('transactions')
+          .insert({
+            user_id: user.id,
+            wallet_id: data.wallet_id,
+            type: data.type,
+            amount: txAmount,
+            category_name: data.category_name,
+            description: data.description,
+            transaction_date: data.transaction_date || getDeviceLocalDate(),
+            target_wallet_id: data.target_wallet_id || null,
+            receipt_url: data.receipt_url || null,
+            receipt_data: data.receipt_data || null,
+          })
+          .select()
+          .single();
 
+        if (txError) {
+          console.error('Gagal menyimpan transaksi ke Supabase:', txError);
+        } else if (insertedTx) {
+          // Ganti id sementara lokal dengan UUID dari database Supabase
+          setTransactions((prev) =>
+            prev.map((t) => (t.id === tempId ? { ...t, id: insertedTx.id } : t))
+          );
+        }
+
+        // Sinkronisasi saldo dompet ke database Supabase
         if (data.type === 'expense' || data.type === 'income') {
-          const targetW = wallets.find((w) => w.id === data.wallet_id);
-          if (targetW) {
-            const nextBal =
-              data.type === 'expense'
-                ? Number(targetW.balance) - data.amount
-                : Number(targetW.balance) + data.amount;
-            await supabase.from('wallets').update({ balance: nextBal }).eq('id', data.wallet_id);
+          const { data: wRow } = await supabase.from('wallets').select('balance').eq('id', data.wallet_id).single();
+          if (wRow) {
+            const currentBal = Number(wRow.balance) || 0;
+            const nextBal = data.type === 'expense' ? currentBal - txAmount : currentBal + txAmount;
+            await supabase.from('wallets').update({ balance: nextBal, updated_at: new Date().toISOString() }).eq('id', data.wallet_id);
+          }
+        } else if (data.type === 'transfer') {
+          const { data: srcRow } = await supabase.from('wallets').select('balance').eq('id', data.wallet_id).single();
+          if (srcRow) {
+            const srcBal = Number(srcRow.balance) || 0;
+            await supabase.from('wallets').update({ balance: srcBal - txAmount, updated_at: new Date().toISOString() }).eq('id', data.wallet_id);
+          }
+          if (data.target_wallet_id) {
+            const { data: tgtRow } = await supabase.from('wallets').select('balance').eq('id', data.target_wallet_id).single();
+            if (tgtRow) {
+              const tgtBal = Number(tgtRow.balance) || 0;
+              await supabase.from('wallets').update({ balance: tgtBal + txAmount, updated_at: new Date().toISOString() }).eq('id', data.target_wallet_id);
+            }
           }
         }
       } catch (err) {
@@ -483,21 +525,23 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
   const deleteTransaction = async (id: string) => {
     const tx = transactions.find((t) => t.id === id);
     if (!tx) return;
+    const txAmount = Math.max(0, Number(tx.amount) || 0);
 
+    // Kembalikan (revert) saldo dompet lokal secara instan
     setWallets((prev) =>
       prev.map((w) => {
         if (tx.type === 'expense' && w.id === tx.wallet_id) {
-          return { ...w, balance: Number(w.balance) + tx.amount };
+          return { ...w, balance: (Number(w.balance) || 0) + txAmount };
         }
         if (tx.type === 'income' && w.id === tx.wallet_id) {
-          return { ...w, balance: Number(w.balance) - tx.amount };
+          return { ...w, balance: (Number(w.balance) || 0) - txAmount };
         }
         if (tx.type === 'transfer') {
           if (w.id === tx.wallet_id) {
-            return { ...w, balance: Number(w.balance) + tx.amount };
+            return { ...w, balance: (Number(w.balance) || 0) + txAmount };
           }
           if (w.id === tx.target_wallet_id) {
-            return { ...w, balance: Number(w.balance) - tx.amount };
+            return { ...w, balance: (Number(w.balance) || 0) - txAmount };
           }
         }
         return w;
@@ -509,6 +553,29 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     if (isSupabaseConfigured && supabase && user && !user.id.startsWith('usr-default-')) {
       try {
         await supabase.from('transactions').delete().eq('id', id);
+
+        // Revert saldo dompet di Supabase
+        if (tx.type === 'expense' || tx.type === 'income') {
+          const { data: wRow } = await supabase.from('wallets').select('balance').eq('id', tx.wallet_id).single();
+          if (wRow) {
+            const currentBal = Number(wRow.balance) || 0;
+            const nextBal = tx.type === 'expense' ? currentBal + txAmount : currentBal - txAmount;
+            await supabase.from('wallets').update({ balance: nextBal, updated_at: new Date().toISOString() }).eq('id', tx.wallet_id);
+          }
+        } else if (tx.type === 'transfer') {
+          const { data: srcRow } = await supabase.from('wallets').select('balance').eq('id', tx.wallet_id).single();
+          if (srcRow) {
+            const srcBal = Number(srcRow.balance) || 0;
+            await supabase.from('wallets').update({ balance: srcBal + txAmount, updated_at: new Date().toISOString() }).eq('id', tx.wallet_id);
+          }
+          if (tx.target_wallet_id) {
+            const { data: tgtRow } = await supabase.from('wallets').select('balance').eq('id', tx.target_wallet_id).single();
+            if (tgtRow) {
+              const tgtBal = Number(tgtRow.balance) || 0;
+              await supabase.from('wallets').update({ balance: tgtBal - txAmount, updated_at: new Date().toISOString() }).eq('id', tx.target_wallet_id);
+            }
+          }
+        }
       } catch (err) {
         console.error('Gagal menghapus transaksi dari Supabase:', err);
       }
@@ -550,7 +617,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
           amount: data.amount,
           category_name: 'Pinjaman Diterima',
           description: `Penerimaan pinjaman dari ${data.person_name}`,
-          transaction_date: new Date().toISOString().split('T')[0],
+          transaction_date: getDeviceLocalDate(),
         });
       } else {
         // Piutang / saya meminjamkan uang ke orang lain: dana keluar dari dompet saya (Pengeluaran)
@@ -560,24 +627,34 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
           amount: data.amount,
           category_name: 'Pinjaman Diberikan',
           description: `Meminjamkan uang kepada ${data.person_name}`,
-          transaction_date: new Date().toISOString().split('T')[0],
+          transaction_date: getDeviceLocalDate(),
         });
       }
     }
 
     if (isSupabaseConfigured && supabase && user && !user.id.startsWith('usr-default-')) {
       try {
-        await supabase.from('debts').insert({
-          user_id: user.id,
-          type: data.type,
-          person_name: data.person_name,
-          amount: data.amount,
-          paid_amount: 0,
-          due_date: data.due_date || null,
-          description: data.description || null,
-          status: 'unpaid',
-          wallet_id: data.wallet_id || null,
-        });
+        const { data: insertedDebt } = await supabase
+          .from('debts')
+          .insert({
+            user_id: user.id,
+            type: data.type,
+            person_name: data.person_name,
+            amount: data.amount,
+            paid_amount: 0,
+            due_date: data.due_date || null,
+            description: data.description || null,
+            status: 'unpaid',
+            wallet_id: data.wallet_id || null,
+          })
+          .select()
+          .single();
+
+        if (insertedDebt) {
+          setDebts((prev) =>
+            prev.map((d) => (d.id === newDebt.id ? { ...d, id: insertedDebt.id } : d))
+          );
+        }
       } catch (err) {
         console.error('Gagal menyimpan data utang ke Supabase:', err);
       }
@@ -638,7 +715,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
           amount: paymentAmount,
           category_name: 'Pembayaran Utang',
           description: `Bayar cicilan/pelunasan utang ke ${debt.person_name}`,
-          transaction_date: new Date().toISOString().split('T')[0],
+          transaction_date: getDeviceLocalDate(),
         });
       } else {
         // Menerima pembayaran piutang: Pemasukan ke dompet
@@ -648,7 +725,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
           amount: paymentAmount,
           category_name: 'Pelunasan Piutang',
           description: `Terima pembayaran piutang dari ${debt.person_name}`,
-          transaction_date: new Date().toISOString().split('T')[0],
+          transaction_date: getDeviceLocalDate(),
         });
       }
     }

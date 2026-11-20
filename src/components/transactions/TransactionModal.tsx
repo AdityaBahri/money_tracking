@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFinance } from '@/context/FinanceContext';
 import { TransactionType } from '@/types/finance';
-import { formatRupiah, parseNumericInput } from '@/lib/formatters';
+import { formatRupiah, parseNumericInput, getDeviceLocalDate } from '@/lib/formatters';
 import { X, ArrowUpRight, ArrowDownLeft, ArrowRightLeft, Wallet, AlertCircle } from 'lucide-react';
 
 const EXPENSE_CATEGORIES = [
@@ -39,13 +39,14 @@ export function TransactionModal() {
   const targetWalletId = selectedTargetWalletId || wallets[1]?.id || '';
   const [categoryName, setCategoryName] = useState('Makanan & Minuman');
   const [description, setDescription] = useState('');
-  const [transactionDate, setTransactionDate] = useState('2024-11-18');
+  const [transactionDate, setTransactionDate] = useState(getDeviceLocalDate);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleClose = React.useCallback(() => {
     setIsAddTxOpen(false);
     setAmountInput('');
     setDescription('');
+    setTransactionDate(getDeviceLocalDate());
   }, [setIsAddTxOpen]);
 
   const handleTypeChange = (newType: TransactionType) => {
@@ -345,9 +346,14 @@ export function TransactionModal() {
           </div>
 
           <div>
-            <label htmlFor="tx-date" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-              Tanggal Transaksi
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label htmlFor="tx-date" className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                Tanggal Transaksi
+              </label>
+              <span className="text-[11px] text-[#007AFF] dark:text-[#0A84FF] font-medium">
+                Otomatis Tanggal Device
+              </span>
+            </div>
             <input
               id="tx-date"
               type="date"

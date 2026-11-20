@@ -1,5 +1,6 @@
 import { createWorker } from 'tesseract.js';
 import { ReceiptScanResult } from '@/types/finance';
+import { getDeviceLocalDate } from '@/lib/formatters';
 
 export interface ScanProgressCallback {
   (status: string, progress: number): void;
@@ -74,8 +75,8 @@ export function parseReceiptText(text: string): {
     merchant = cleanMerchantName(lines[0]);
   }
 
-  // 2. Ekstrak Tanggal
-  let detectedDate = new Date().toISOString().split('T')[0];
+  // 2. Ekstrak Tanggal (Default: tanggal perangkat lokal pengguna)
+  let detectedDate = getDeviceLocalDate();
   const dateRegex = /(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/;
   for (const line of lines) {
     const match = line.match(dateRegex);

@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useFinance } from '@/context/FinanceContext';
 import { scanReceiptImage } from '@/lib/ocr';
-import { formatRupiah, parseNumericInput } from '@/lib/formatters';
+import { formatRupiah, parseNumericInput, getDeviceLocalDate } from '@/lib/formatters';
 import { supabase } from '@/lib/supabase';
 import {
   X,
@@ -36,7 +36,7 @@ export function ReceiptScannerModal() {
   const [scanProgress, setScanProgress] = useState(0);
 
   const [merchant, setMerchant] = useState('');
-  const [date, setDate] = useState('2024-11-18');
+  const [date, setDate] = useState(getDeviceLocalDate);
   const [totalInput, setTotalInput] = useState('');
   const [category, setCategory] = useState('Belanja Harian');
   const [selectedWalletId, setSelectedWalletId] = useState('');
@@ -55,6 +55,7 @@ export function ReceiptScannerModal() {
     setScanStatus('');
     setScanProgress(0);
     setMerchant('');
+    setDate(getDeviceLocalDate());
     setTotalInput('');
     setRawText('');
     setHasScanned(false);
@@ -203,7 +204,7 @@ export function ReceiptScannerModal() {
 
     // Langsung set hasil ekstraksi terverifikasi
     setMerchant('INDOMARET POINT');
-    setDate('2024-11-18');
+    setDate(getDeviceLocalDate());
     setTotalInput('78000');
     setCategory('Belanja Harian');
     setRawText('INDOMARET POINT\nJL. SUDIRMAN NO. 45\nTOTAL BELANJA : Rp 78.000\nTUNAI: Rp 100.000');

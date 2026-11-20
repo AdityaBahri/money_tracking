@@ -147,12 +147,41 @@ export function WalletList() {
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-black/[0.05] dark:border-white/[0.08]">
-                    <span className="text-[11px] text-[#6C6C70] dark:text-[#8E8E93] block mb-0.5">
-                      Saldo Saat Ini
-                    </span>
-                    <div className="text-xl font-bold text-slate-900 dark:text-white">
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className="text-[11px] text-[#6C6C70] dark:text-[#8E8E93]">
+                        Saldo Saat Ini
+                      </span>
+                      {wallet.balance < 0 && (
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(wallet)}
+                          className="apple-button text-[11px] font-semibold text-[#007AFF] dark:text-[#0A84FF] hover:underline"
+                        >
+                          Sesuaikan Saldo
+                        </button>
+                      )}
+                    </div>
+                    <div
+                      className={`text-xl font-bold ${
+                        wallet.balance < 0
+                          ? 'text-[#FF3B30] dark:text-[#FF453A]'
+                          : 'text-slate-900 dark:text-white'
+                      }`}
+                    >
                       {formatRupiah(wallet.balance)}
                     </div>
+                    {wallet.balance < 0 && (
+                      <div className="mt-2 text-[11px] font-medium text-rose-600 dark:text-rose-400 bg-rose-500/10 px-2.5 py-1.5 rounded-xl flex items-center justify-between">
+                        <span>Saldo tercatat minus</span>
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(wallet)}
+                          className="underline font-semibold hover:opacity-80"
+                        >
+                          Ubah Saldo &rarr;
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

@@ -25,7 +25,9 @@ export function WalletModal() {
 
   const [name, setName] = useState(editingWallet?.name || '');
   const [type, setType] = useState<WalletType>(editingWallet?.type || 'bank');
-  const [balanceInput, setBalanceInput] = useState(editingWallet ? editingWallet.balance.toString() : '0');
+  const [balanceInput, setBalanceInput] = useState(
+    editingWallet ? Math.max(0, Number(editingWallet.balance) || 0).toString() : '0'
+  );
   const [accountNumber, setAccountNumber] = useState(editingWallet?.account_number || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -194,6 +196,14 @@ export function WalletModal() {
                 className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-[#2C2C2E]/60 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] font-mono"
               />
             </div>
+            {editingWallet && editingWallet.balance < 0 && (
+              <p className="text-[11px] text-rose-600 dark:text-rose-400 mt-1.5 flex items-center gap-1 font-medium">
+                <span>⚠️</span>
+                <span>
+                  Saldo sebelumnya tercatat minus ({formatRupiah(editingWallet.balance)}). Masukkan saldo riil dompet untuk menyelaraskan kembali.
+                </span>
+              </p>
+            )}
           </div>
 
           {/* Account Number (Optional) */}

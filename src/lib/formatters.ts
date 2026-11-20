@@ -65,6 +65,18 @@ export function formatTanggalIndo(dateString: string): string {
 }
 
 /**
+ * Mendapatkan tanggal perangkat lokal pengguna saat ini dalam format YYYY-MM-DD.
+ * Menggunakan getFullYear(), getMonth(), dan getDate() untuk memastikan zona waktu perangkat lokal pengguna.
+ */
+export function getDeviceLocalDate(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+/**
  * Mengubah input teks pengguna menjadi angka murni
  */
 export function parseNumericInput(value: string): number {
