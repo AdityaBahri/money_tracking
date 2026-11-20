@@ -89,6 +89,8 @@ interface FinanceContextType {
   setEditingWallet: (wallet: Wallet | null) => void;
   editingDebt: Debt | null;
   setEditingDebt: (debt: Debt | null) => void;
+  isExportOpen: boolean;
+  setIsExportOpen: (open: boolean) => void;
 }
 
 const FinanceContext = createContext<FinanceContextType | undefined>(undefined);
@@ -113,6 +115,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
   const [isSupabaseModalOpen, setIsSupabaseModalOpen] = useState(false);
   const [editingWallet, setEditingWallet] = useState<Wallet | null>(null);
   const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
+  const [isExportOpen, setIsExportOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -951,6 +954,8 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
         setEditingWallet,
         editingDebt,
         setEditingDebt,
+        isExportOpen,
+        setIsExportOpen,
       }}
     >
       {children}

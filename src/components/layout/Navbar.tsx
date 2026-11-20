@@ -9,6 +9,7 @@ import {
   User,
   LogOut,
   ChevronDown,
+  Download,
 } from 'lucide-react';
 
 export function Navbar() {
@@ -18,6 +19,7 @@ export function Navbar() {
     toggleTheme,
     setIsAuthOpen,
     logout,
+    setIsExportOpen,
   } = useFinance();
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -104,7 +106,19 @@ export function Navbar() {
                         Pemilik Akun Tunggal
                       </div>
                     </div>
-                    <div className="p-1">
+                    <div className="p-1 space-y-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsUserMenuOpen(false);
+                          setIsExportOpen(true);
+                        }}
+                        className="apple-button w-full text-left px-3 py-2 rounded-xl hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] text-slate-800 dark:text-slate-200 flex items-center gap-2 font-medium"
+                        role="menuitem"
+                      >
+                        <Download className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#0A84FF]" aria-hidden="true" />
+                        <span>Ekspor Catatan Keuangan</span>
+                      </button>
                       <button
                         type="button"
                         onClick={() => {

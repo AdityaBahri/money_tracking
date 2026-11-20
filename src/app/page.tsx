@@ -14,6 +14,7 @@ import { WalletModal } from '@/components/wallets/WalletModal';
 import { DebtModal } from '@/components/debts/DebtModal';
 import { DebtPaymentModal } from '@/components/debts/DebtPaymentModal';
 import { ReceiptScannerModal } from '@/components/scanner/ReceiptScannerModal';
+import { ExportModal } from '@/components/export/ExportModal';
 import { AuthPage } from '@/components/auth/AuthPage';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { SupabaseConfigModal } from '@/components/settings/SupabaseConfigModal';
@@ -141,6 +142,7 @@ export default function HomePage() {
       <DebtModal key={editingDebt?.id || (isAddDebtOpen ? 'debt-open' : 'debt-closed')} />
       <DebtPaymentModal />
       <ReceiptScannerModal />
+      <ExportModal />
       <AuthModal />
       <SupabaseConfigModal />
     </div>

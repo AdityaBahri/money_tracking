@@ -10,6 +10,7 @@ import {
   PlusCircle,
   ShieldCheck,
   HandCoins,
+  Download,
 } from 'lucide-react';
 import { formatRupiah } from '@/lib/formatters';
 
@@ -23,6 +24,7 @@ export function Sidebar() {
     totalBalance,
     setIsAddTxOpen,
     setIsScannerOpen,
+    setIsExportOpen,
   } = useFinance();
 
   return (
@@ -135,6 +137,22 @@ export function Sidebar() {
             {debts.length}
           </span>
         </button>
+
+        <div className="pt-3 mt-3 border-t border-black/[0.05] dark:border-white/[0.08]">
+          <button
+            type="button"
+            onClick={() => setIsExportOpen(true)}
+            className="apple-button tap-target w-full px-3 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors text-[#6C6C70] dark:text-[#8E8E93] hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] hover:text-slate-900 dark:hover:text-white"
+          >
+            <div className="flex items-center gap-2.5">
+              <Download className="w-4 h-4 text-[#007AFF] dark:text-[#0A84FF]" aria-hidden="true" />
+              <span>Ekspor Laporan</span>
+            </div>
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-[#007AFF]/10 dark:bg-[#0A84FF]/15 text-[#007AFF] dark:text-[#0A84FF]">
+              PDF/CSV
+            </span>
+          </button>
+        </div>
       </nav>
     </aside>
   );

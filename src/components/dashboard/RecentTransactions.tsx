@@ -14,10 +14,11 @@ import {
   Trash2,
   Receipt,
   Tag,
+  Download,
 } from 'lucide-react';
 
 export function RecentTransactions({ limit }: { limit?: number }) {
-  const { transactions, wallets, deleteTransaction, setIsAddTxOpen, setIsScannerOpen } = useFinance();
+  const { transactions, wallets, deleteTransaction, setIsAddTxOpen, setIsScannerOpen, setIsExportOpen } = useFinance();
 
   const [typeFilter, setTypeFilter] = useState<'all' | TransactionType>('all');
   const [walletFilter, setWalletFilter] = useState<string>('all');
@@ -63,8 +64,17 @@ export function RecentTransactions({ limit }: { limit?: number }) {
           </p>
         </div>
 
-        {/* Action button if empty */}
+        {/* Action buttons */}
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsExportOpen(true)}
+            className="apple-button tap-target px-3.5 py-1.5 rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-white dark:bg-[#1C1C1E] hover:bg-black/[0.04] dark:hover:bg-[#2C2C2E] text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition-colors shadow-xs"
+            title="Ekspor catatan keuangan ke CSV/Excel, cetak PDF, atau cadangkan data JSON"
+          >
+            <Download className="w-4 h-4 text-[#007AFF] dark:text-[#0A84FF]" aria-hidden="true" />
+            <span>Ekspor</span>
+          </button>
           <button
             type="button"
             onClick={() => setIsScannerOpen(true)}
